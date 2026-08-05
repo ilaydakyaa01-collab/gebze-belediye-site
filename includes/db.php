@@ -4,9 +4,10 @@ $user = "root";
 $pass = "";
 $dbname = "gebze_belediye";
 
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    die("Bağlantı hatası: " . $conn->connect_error);
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Bağlantı hatası: " . $e->getMessage());
 }
 ?>

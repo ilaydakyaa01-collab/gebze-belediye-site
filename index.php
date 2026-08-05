@@ -11,6 +11,10 @@ include 'includes/db.php';
 <body>
     <header>
         <h1>Gebze Belediyesi</h1>
+        <nav>
+            <a href="index.php">Ana Sayfa</a>
+            <a href="pages/haberler.php">Haberler</a>
+        </nav>
     </header>
     <main>
         <p>Site yapım aşamasında.</p>
