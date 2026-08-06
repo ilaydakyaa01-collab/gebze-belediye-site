@@ -33,9 +33,11 @@ require_once __DIR__ . '/init.php';
             <li class="has-dropdown">
                 <a href="#">Kurumsal</a>
                 <ul class="dropdown">
-                    <li><a href="#">Vizyonumuz</a></li>
-                    <li><a href="#">Misyonumuz</a></li>
-                    <li><a href="#">Belediye Meclisi</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/vizyonumuz.php">Vizyonumuz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/misyonumuz.php">Misyonumuz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/ilkelerimiz.php">İlkelerimiz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/enerji-politikamiz.php">Enerji Politikamız</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/belediye-meclisi.php">Belediye Meclisi</a></li>
                     <li><a href="#">Müdürlükler</a></li>
                 </ul>
             </li>
