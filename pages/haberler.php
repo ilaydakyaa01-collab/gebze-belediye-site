@@ -26,7 +26,7 @@ include '../includes/header.php';
                     <?php
                     $img = !empty($haber['resim'])
                         ? $basePath . ltrim($haber['resim'], '/')
-                        : $basePath . 'img/haberler/haber-' . (($i % 6) + 1) . '.jpg';
+                        : $basePath . 'img/haberler/haber' . (($i % 14) + 1) . '.jpg';
                     ?>
                     <article class="haber-kart">
                         <div class="haber-gorsel">
@@ -37,7 +37,6 @@ include '../includes/header.php';
                                 <?php echo trTarih($haber['tarih']); ?>
                             </time>
                             <h3><?php echo htmlspecialchars($haber['baslik']); ?></h3>
-                            <p class="haber-ozet"><?php echo htmlspecialchars($haber['icerik']); ?></p>
                         </div>
                     </article>
                 <?php endforeach; ?>

@@ -12,59 +12,27 @@ $haberler = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $tickerStmt = $conn->query("SELECT id, baslik FROM haberler ORDER BY tarih DESC LIMIT 8");
 $tickerHaberler = $tickerStmt->fetchAll(PDO::FETCH_ASSOC);
 
-$duyurular = [
-    ['baslik' => 'Araç Kiralama Hizmeti Alınacaktır', 'tarih' => '2026-08-05'],
-    ['baslik' => 'Toner ve Yedek Parça Satın Alınacaktır', 'tarih' => '2026-08-03'],
-    ['baslik' => 'Yıkım İşleri Yaptırılacaktır', 'tarih' => '2026-07-29'],
-    ['baslik' => 'Cumhuriyet Meydanı Yeraltı Çarşısı İhale İlanı', 'tarih' => '2026-07-24'],
-    ['baslik' => 'Gençlik Merkezi Çatı Tadilatı İhale İlanı', 'tarih' => '2026-07-24'],
-    ['baslik' => 'İmar Plan İlanı', 'tarih' => '2026-07-22'],
-];
-
-$videolar = [
-    ['baslik' => 'Gebze\'nin Geleceği: Başkan\'dan Mesaj', 'tarih' => '2026-08-01', 'resim' => 'img/haberler/haber-1.jpg', 'sure' => '03:24'],
-    ['baslik' => 'Eskihisar Millet Bahçesi Tanıtımı', 'tarih' => '2026-07-28', 'resim' => 'img/haberler/haber-3.jpg', 'sure' => '02:45'],
-    ['baslik' => 'Mahallemde Sinema Var', 'tarih' => '2026-07-20', 'resim' => 'img/haberler/haber-4.jpg', 'sure' => '01:58'],
-    ['baslik' => 'TDBB Yönetim Kurulu Toplantısı', 'tarih' => '2026-07-15', 'resim' => 'img/haberler/haber-5.jpg', 'sure' => '04:12'],
-    ['baslik' => 'Gebzespor Sezon Hazırlıkları', 'tarih' => '2026-07-10', 'resim' => 'img/haberler/haber-6.jpg', 'sure' => '02:30'],
-    ['baslik' => 'Kaymakamlık Ziyareti', 'tarih' => '2026-07-05', 'resim' => 'img/haberler/haber-2.jpg', 'sure' => '01:42'],
-];
-
-$hizmetler = [
-    ['icon' => 'bi-laptop', 'baslik' => 'E-Belediye', 'href' => '#'],
-    ['icon' => 'bi-file-earmark-text', 'baslik' => 'Başvuru', 'href' => '#'],
-    ['icon' => 'bi-buildings', 'baslik' => 'İmar', 'href' => '#'],
-    ['icon' => 'bi-capsule-pill', 'baslik' => 'Eczane', 'href' => '#'],
-    ['icon' => 'bi-bus-front', 'baslik' => 'Ulaşım', 'href' => '#'],
-    ['icon' => 'bi-headset', 'baslik' => 'Alo 153', 'href' => '#'],
-];
+$duyurularAna = $conn->query("SELECT * FROM duyurular ORDER BY tarih DESC, id ASC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC);
+$videolar = $conn->query("SELECT youtube_id, baslik FROM videolar ORDER BY id ASC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC);
+$hizmetler = $conn->query("SELECT icon, baslik, href FROM hizmetler ORDER BY sira ASC, id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$etkinlikler = $conn->query("SELECT *, (tarih = CURDATE()) AS bugun FROM etkinlikler ORDER BY sira ASC, id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$projeler = $conn->query("SELECT * FROM projeler ORDER BY sira ASC, id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$heroSlaytlar = $conn->query("SELECT * FROM hero_slaytlar ORDER BY sira ASC, id ASC")->fetchAll(PDO::FETCH_ASSOC);
 
 include 'includes/header.php';
 ?>
 
     <section class="hero-slider" id="heroSlider" aria-label="Ana görseller">
         <div class="hero-slides">
-            <article class="hero-slide is-active" style="background-image: url('img/haberler/haber-3.jpg')">
-                <div class="hero-overlay"></div>
-                <div class="hero-caption container">
-                    <h1>Şehrimize değer katan hizmetler</h1>
-                    <p>Şeffaf, katılımcı ve modern belediyecilik.</p>
-                </div>
-            </article>
-            <article class="hero-slide" style="background-image: url('img/haberler/haber-4.jpg')">
-                <div class="hero-overlay"></div>
-                <div class="hero-caption container">
-                    <h1>Katılımcı ve şeffaf yönetim</h1>
-                    <p>Gebze için birlikte üretiyoruz.</p>
-                </div>
-            </article>
-            <article class="hero-slide" style="background-image: url('img/haberler/haber-1.jpg')">
-                <div class="hero-overlay"></div>
-                <div class="hero-caption container">
-                    <h1>Yeşil alanlar, kültür ve spor</h1>
-                    <p>Yaşanabilir bir Gebze için çalışıyoruz.</p>
-                </div>
-            </article>
+            <?php foreach ($heroSlaytlar as $i => $slide): ?>
+                <article class="hero-slide<?php echo $i === 0 ? ' is-active' : ''; ?>" style="background-image: url('<?php echo htmlspecialchars($slide['resim']); ?>')">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-caption container">
+                        <h1><?php echo htmlspecialchars($slide['baslik']); ?></h1>
+                        <p><?php echo htmlspecialchars($slide['aciklama']); ?></p>
+                    </div>
+                </article>
+            <?php endforeach; ?>
         </div>
         <div class="hero-controls">
             <button type="button" class="hero-btn" id="heroPrev" aria-label="Önceki"><i class="bi bi-chevron-left"></i></button>
@@ -155,7 +123,7 @@ include 'includes/header.php';
                 <div class="haber-grid">
                     <?php if (count($haberler) > 0): ?>
                         <?php foreach ($haberler as $i => $haber): ?>
-                            <?php $img = !empty($haber['resim']) ? $haber['resim'] : 'img/haberler/haber-' . (($i % 6) + 1) . '.jpg'; ?>
+                            <?php $img = !empty($haber['resim']) ? $haber['resim'] : 'img/haberler/haber' . (($i % 14) + 1) . '.jpg'; ?>
                             <article class="haber-kart">
                                 <a href="pages/haberler.php" class="haber-gorsel">
                                     <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($haber['baslik']); ?>" loading="lazy">
@@ -179,41 +147,137 @@ include 'includes/header.php';
 
             <div class="tab-panel" id="duyuru-panel" role="tabpanel" hidden>
                 <div class="haber-grid">
-                    <?php foreach ($duyurular as $duyuru): ?>
+                    <?php foreach ($duyurularAna as $duyuru): ?>
                         <article class="haber-kart">
-                            <div class="haber-gorsel duyuru-gorsel">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
+                            <a href="pages/duyurular.php" class="haber-gorsel">
+                                <img src="<?php echo htmlspecialchars($duyuru['resim']); ?>" alt="Duyuru" loading="lazy">
+                            </a>
                             <div class="haber-meta">
-                                <time><?php echo trTarih($duyuru['tarih']); ?></time>
-                                <h3><a href="#"><?php echo htmlspecialchars($duyuru['baslik']); ?></a></h3>
+                                <time datetime="<?php echo htmlspecialchars($duyuru['tarih']); ?>"><?php echo trTarih($duyuru['tarih']); ?></time>
+                                <h3><a href="pages/duyurular.php"><?php echo htmlspecialchars($duyuru['baslik']); ?></a></h3>
                             </div>
                         </article>
                     <?php endforeach; ?>
                 </div>
                 <div class="section-actions">
-                    <a href="#" class="btn-outline">Tüm Duyurular <i class="bi bi-arrow-right"></i></a>
+                    <a href="pages/duyurular.php" class="btn-outline">Tüm Duyurular <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
 
             <div class="tab-panel" id="video-panel" role="tabpanel" hidden>
                 <div class="haber-grid">
-                    <?php foreach ($videolar as $video): ?>
-                        <article class="haber-kart video-kart">
-                            <a href="#" class="haber-gorsel video-thumb">
-                                <img src="<?php echo htmlspecialchars($video['resim']); ?>" alt="<?php echo htmlspecialchars($video['baslik']); ?>" loading="lazy">
-                                <span class="video-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
-                                <span class="video-sure"><?php echo htmlspecialchars($video['sure']); ?></span>
-                            </a>
-                            <div class="haber-meta">
-                                <time><?php echo trTarih($video['tarih']); ?></time>
-                                <h3><a href="#"><?php echo htmlspecialchars($video['baslik']); ?></a></h3>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
+                    <?php if (count($videolar) > 0): ?>
+                        <?php foreach ($videolar as $video): ?>
+                            <?php
+                            $ytId = $video['youtube_id'];
+                            $ytLink = 'https://www.youtube.com/watch?v=' . rawurlencode($ytId);
+                            $ytThumb = 'https://img.youtube.com/vi/' . rawurlencode($ytId) . '/hqdefault.jpg';
+                            ?>
+                            <article class="haber-kart video-kart">
+                                <a href="<?php echo htmlspecialchars($ytLink); ?>" class="haber-gorsel video-thumb" target="_blank" rel="noopener noreferrer">
+                                    <img src="<?php echo htmlspecialchars($ytThumb); ?>" alt="<?php echo htmlspecialchars($video['baslik']); ?>" loading="lazy">
+                                    <span class="video-play" aria-hidden="true"><i class="bi bi-play-fill"></i></span>
+                                </a>
+                                <div class="haber-meta">
+                                    <h3>
+                                        <a href="<?php echo htmlspecialchars($ytLink); ?>" target="_blank" rel="noopener noreferrer">
+                                            <?php echo htmlspecialchars($video['baslik']); ?>
+                                        </a>
+                                    </h3>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="bos-mesaj">Henüz video eklenmemiş.</p>
+                    <?php endif; ?>
                 </div>
                 <div class="section-actions">
-                    <a href="#" class="btn-outline">Tüm Videolar <i class="bi bi-arrow-right"></i></a>
+                    <a href="pages/videolar.php" class="btn-outline">Tüm Videolar <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="etkinlik-bolumu" id="etkinlikler">
+        <div class="container">
+            <header class="etkinlik-header">
+                <div>
+                    <h2>Etkinlikler</h2>
+                    <p>Şehrimizdeki güncel etkinlikleri keşfedin.</p>
+                </div>
+                <a href="pages/etkinlikler.php" class="btn-outline">Tüm Etkinlikler <i class="bi bi-arrow-right"></i></a>
+            </header>
+
+            <div class="etkinlik-slider">
+                <button type="button" class="etkinlik-nav prev" id="etkinlikPrev" aria-label="Önceki etkinlikler">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <div class="etkinlik-viewport" id="etkinlikViewport">
+                    <div class="etkinlik-track" id="etkinlikTrack">
+                        <?php foreach ($etkinlikler as $etkinlik): ?>
+                            <article class="etkinlik-kart">
+                                <div class="etkinlik-gorsel">
+                                    <img src="<?php echo htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>" loading="lazy">
+                                    <span class="etkinlik-kategori" style="background-color: <?php echo htmlspecialchars($etkinlik['renk']); ?>">
+                                        <?php echo htmlspecialchars($etkinlik['kategori']); ?>
+                                    </span>
+                                    <?php if (!empty($etkinlik['bugun'])): ?>
+                                        <span class="etkinlik-badge">Bugün</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="etkinlik-bilgi">
+                                    <time datetime="<?php echo htmlspecialchars($etkinlik['tarih']); ?>">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <?php echo date('d.m.Y', strtotime($etkinlik['tarih'])); ?>
+                                    </time>
+                                    <h3><?php echo htmlspecialchars($etkinlik['baslik']); ?></h3>
+                                    <p><i class="bi bi-clock"></i> <?php echo htmlspecialchars($etkinlik['saat']); ?></p>
+                                    <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($etkinlik['yer']); ?></p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <button type="button" class="etkinlik-nav next" id="etkinlikNext" aria-label="Sonraki etkinlikler">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="proje-bolumu" id="projeler">
+        <div class="container">
+            <header class="proje-header">
+                <h2>Projelerimiz</h2>
+                <div class="proje-filtreler" role="tablist" aria-label="Proje filtreleri">
+                    <button type="button" class="proje-filtre is-active" data-filter="tumu">Tümü</button>
+                    <button type="button" class="proje-filtre" data-filter="devam">Devam Eden</button>
+                    <button type="button" class="proje-filtre" data-filter="tamamlanan">Tamamlanan</button>
+                    <button type="button" class="proje-filtre" data-filter="planlanan">Planlanan</button>
+                </div>
+            </header>
+
+            <div class="proje-slider">
+                <div class="proje-viewport" id="projeViewport">
+                    <div class="proje-track" id="projeTrack">
+                        <?php foreach ($projeler as $proje): ?>
+                            <article class="proje-kart" data-durum="<?php echo htmlspecialchars($proje['durum']); ?>">
+                                <img src="<?php echo htmlspecialchars($proje['resim']); ?>" alt="<?php echo htmlspecialchars($proje['baslik']); ?>" loading="lazy" draggable="false">
+                                <span class="proje-durum"><?php echo htmlspecialchars(projeDurumYazi($proje['durum'])); ?></span>
+                                <div class="proje-overlay">
+                                    <h3><?php echo htmlspecialchars($proje['baslik']); ?></h3>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="proje-navs">
+                    <button type="button" class="proje-nav" id="projePrev" aria-label="Önceki projeler">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button type="button" class="proje-nav" id="projeNext" aria-label="Sonraki projeler">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
