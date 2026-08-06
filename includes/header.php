@@ -27,10 +27,11 @@ require_once __DIR__ . '/init.php';
 
         <ul class="nav-links" id="navLinks">
             <li class="has-dropdown">
-                <a href="#">Başkan</a>
+                <a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Başkan</a>
                 <ul class="dropdown">
-                    <li><a href="#">Özgeçmiş</a></li>
-                    <li><a href="#">Projeler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Özgeçmiş</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/baskan/projeler.php">Projeler</a></li>
+                    <li><a href="https://www.zinnurbuyukgoz.com" target="_blank" rel="noopener">Başkanın Web Sayfası</a></li>
                 </ul>
             </li>
             <li class="has-dropdown">
@@ -64,7 +65,7 @@ require_once __DIR__ . '/init.php';
         </button>
     </div>
     <a href="<?php echo $basePath; ?>index.php">Ana Sayfa</a>
-    <a href="#">Başkan</a>
+    <a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Başkan</a>
     <a href="#">Kurumsal</a>
     <a href="#">Gebze</a>
     <a href="#">Hizmetler</a>
