@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "";
+$pass = "1234";
 $dbname = "gebze_belediye";
 
 try {

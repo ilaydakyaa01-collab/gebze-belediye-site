@@ -40,17 +40,17 @@ CREATE TABLE `haberler` (
 --
 
 INSERT INTO `haberler` (`id`, `baslik`, `icerik`, `resim`, `tarih`) VALUES
-(1, 'Gebze\'de Yeni Park Açıldı.', 'Gebze Belediyesi tarafından yapılan yeni park bugün hizmete açıldı\r\n', '', '2026-08-05 10:00:00'),
-(3, 'Başkan Büyükgözden Mecliste Müjde', 'Belediye meclisi toplantısında vatandaşları ilgilendiren önemli kararlar alındı.', '', '2026-08-05 09:00:00'),
-(4, 'Yeni Kültür Merkezi Hizmete Girdi', 'Gebze genelinde vatandaşların kullanımına yeni bir kültür merkezi açıldı.', '', '2026-08-04 10:30:00'),
-(5, 'Eskihisar Millet Bahçesinde Buluşma', 'Başkan, vatandaşlarla birlikte park alanında bir araya geldi.', '', '2026-08-04 14:00:00'),
-(6, 'Mahallemde Sinema Etkinliği Devam Ediyor', 'Yaz aylarında düzenlenen açık hava sinema etkinlikleri ilgiyle takip ediliyor.', '', '2026-08-03 18:00:00'),
-(7, 'Gebzespor Kampa Girdi', 'Takım, yeni sezon hazırlıkları kapsamında kampa başladı.', '', '2026-07-31 16:00:00'),
-(8, 'Yeni Spor Kompleksi Tamamlandı', 'Vatandaşların ücretsiz kullanımına açılan spor tesisleri büyük ilgi gördü.', '', '2026-07-30 12:00:00'),
-(9, 'Kaymakamlık Ziyareti Gerçekleşti', 'Belediye başkanı, hayırlı olsun ziyaretinde bulundu.', '', '2026-07-29 11:00:00'),
-(10, 'Çevre Düzenleme Çalışmaları Sürüyor', 'Şehir genelinde yeşil alan ve park çalışmaları hızla devam ediyor.', '', '2026-07-28 09:30:00'),
-(11, 'Engelli Vatandaşlara Yönelik Proje Başladı', 'Erişilebilirlik projeleri kapsamında yeni adımlar atıldı.', '', '2026-07-27 13:00:00'),
-(12, 'Belediyeden Öğrencilere Destek', 'Yeni eğitim döneminde öğrencilere kırtasiye desteği sağlanacak.', '', '2026-07-26 10:00:00');
+(1, 'Gebze\'de Yeni Park Açıldı.', 'Gebze Belediyesi tarafından yapılan yeni park bugün hizmete açıldı\r\n', 'img/haberler/haber-3.jpg', '2026-08-05 10:00:00'),
+(3, 'Başkan Büyükgözden Mecliste Müjde', 'Belediye meclisi toplantısında vatandaşları ilgilendiren önemli kararlar alındı.', 'img/haberler/haber-1.jpg', '2026-08-05 09:00:00'),
+(4, 'Yeni Kültür Merkezi Hizmete Girdi', 'Gebze genelinde vatandaşların kullanımına yeni bir kültür merkezi açıldı.', 'img/haberler/haber-4.jpg', '2026-08-04 10:30:00'),
+(5, 'Eskihisar Millet Bahçesinde Buluşma', 'Başkan, vatandaşlarla birlikte park alanında bir araya geldi.', 'img/haberler/haber-3.jpg', '2026-08-04 14:00:00'),
+(6, 'Mahallemde Sinema Etkinliği Devam Ediyor', 'Yaz aylarında düzenlenen açık hava sinema etkinlikleri ilgiyle takip ediliyor.', 'img/haberler/haber-4.jpg', '2026-08-03 18:00:00'),
+(7, 'Gebzespor Kampa Girdi', 'Takım, yeni sezon hazırlıkları kapsamında kampa başladı.', 'img/haberler/haber-6.jpg', '2026-07-31 16:00:00'),
+(8, 'Yeni Spor Kompleksi Tamamlandı', 'Vatandaşların ücretsiz kullanımına açılan spor tesisleri büyük ilgi gördü.', 'img/haberler/haber-6.jpg', '2026-07-30 12:00:00'),
+(9, 'Kaymakamlık Ziyareti Gerçekleşti', 'Belediye başkanı, hayırlı olsun ziyaretinde bulundu.', 'img/haberler/haber-2.jpg', '2026-07-29 11:00:00'),
+(10, 'Çevre Düzenleme Çalışmaları Sürüyor', 'Şehir genelinde yeşil alan ve park çalışmaları hızla devam ediyor.', 'img/haberler/haber-3.jpg', '2026-07-28 09:30:00'),
+(11, 'Engelli Vatandaşlara Yönelik Proje Başladı', 'Erişilebilirlik projeleri kapsamında yeni adımlar atıldı.', 'img/haberler/haber-5.jpg', '2026-07-27 13:00:00'),
+(12, 'Belediyeden Öğrencilere Destek', 'Yeni eğitim döneminde öğrencilere kırtasiye desteği sağlanacak.', 'img/haberler/haber-5.jpg', '2026-07-26 10:00:00');
 
 --
 -- Dökümü yapılmış tablolar için indeksler
