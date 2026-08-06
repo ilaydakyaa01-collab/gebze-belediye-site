@@ -13,6 +13,9 @@ require_once __DIR__ . '/init.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?php echo $basePath; ?>css/style.css">
+    <?php if (!empty($extraCss)): ?>
+    <link rel="stylesheet" href="<?php echo $basePath . $extraCss; ?>">
+<?php endif; ?>
 </head>
 <body<?php echo !empty($bodyClass) ? ' class="' . htmlspecialchars($bodyClass) . '"' : ''; ?>>
 
@@ -37,6 +40,7 @@ require_once __DIR__ . '/init.php';
                     <li><a href="#">Misyonumuz</a></li>
                     <li><a href="#">Belediye Meclisi</a></li>
                     <li><a href="#">Müdürlükler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a></li>
                 </ul>
             </li>
             <li><a href="#">Gebze</a></li>

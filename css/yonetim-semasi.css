@@ -1,0 +1,98 @@
+/* ========== YÖNETİM ŞEMASI ========== */
+.yonetim-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.yonetim-kart {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    min-width: 220px;
+    box-shadow: var(--shadow);
+}
+
+.yonetim-baskan {
+    border: 2px solid var(--accent);
+}
+
+.yonetim-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 0.8rem;
+    border-radius: 50%;
+    background: #eef4fb;
+    color: var(--navy);
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+}
+
+.yonetim-baskan .yonetim-icon {
+    background: var(--accent);
+    color: var(--navy-deep);
+}
+
+.yonetim-kart h3 {
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+}
+
+.yonetim-kart p {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.yonetim-satir {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.yonetim-alt-baslik {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    color: var(--navy);
+    align-self: flex-start;
+}
+
+.yonetim-mudurluk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.yonetim-mudurluk {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.yonetim-mudurluk i {
+    color: var(--accent-hot);
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .yonetim-mudurluk-grid {
+        grid-template-columns: 1fr;
+    }
+    .yonetim-satir {
+        flex-direction: column;
+        width: 100%;
+    }
+}
