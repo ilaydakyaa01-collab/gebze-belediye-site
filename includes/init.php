@@ -31,3 +31,13 @@ if (!function_exists('trTarih')) {
         return date('d', $ts) . ' ' . $aylar[(int) date('n', $ts)] . ' ' . date('Y', $ts);
     }
 }
+
+if (!function_exists('projeDurumYazi')) {
+    function projeDurumYazi(string $durum): string {
+        return match ($durum) {
+            'tamamlanan' => 'Tamamlanan',
+            'planlanan' => 'Planlanan',
+            default => 'Devam Eden',
+        };
+    }
+}

@@ -129,4 +129,169 @@
             }
         });
     });
+
+    const trackEl = document.getElementById("etkinlikTrack");
+    const viewport = document.getElementById("etkinlikViewport");
+    const prevBtn = document.getElementById("etkinlikPrev");
+    const nextBtn = document.getElementById("etkinlikNext");
+    let eventIndex = 0;
+    let eventTimer;
+
+    const getStep = () => {
+        const card = trackEl?.querySelector(".etkinlik-kart");
+        if (!card || !trackEl) return 300;
+        const styles = getComputedStyle(trackEl);
+        const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+        return card.getBoundingClientRect().width + gap;
+    };
+
+    const maxIndex = () => {
+        if (!trackEl || !viewport) return 0;
+        const overflow = trackEl.scrollWidth - viewport.clientWidth;
+        if (overflow <= 4) return 0;
+        return Math.round(overflow / getStep());
+    };
+
+    const syncSlideWidth = () => {
+        if (!viewport) return;
+        viewport.style.setProperty("--slide-w", `${viewport.clientWidth}px`);
+    };
+
+    const updateEvents = () => {
+        if (!trackEl) return;
+        syncSlideWidth();
+        const max = maxIndex();
+        eventIndex = ((eventIndex % (max + 1)) + (max + 1)) % (max + 1);
+        trackEl.style.transform = `translateX(-${eventIndex * getStep()}px)`;
+    };
+
+    const restartEventTimer = () => {
+        clearInterval(eventTimer);
+        if (!trackEl || maxIndex() <= 0) return;
+        eventTimer = setInterval(() => {
+            eventIndex += 1;
+            updateEvents();
+        }, 4000);
+    };
+
+    prevBtn?.addEventListener("click", () => {
+        eventIndex -= 1;
+        updateEvents();
+        restartEventTimer();
+    });
+    nextBtn?.addEventListener("click", () => {
+        eventIndex += 1;
+        updateEvents();
+        restartEventTimer();
+    });
+
+    viewport?.addEventListener("mouseenter", () => clearInterval(eventTimer));
+    viewport?.addEventListener("mouseleave", restartEventTimer);
+
+    window.addEventListener("resize", () => {
+        updateEvents();
+        restartEventTimer();
+    });
+    updateEvents();
+    restartEventTimer();
+
+    const projeTrack = document.getElementById("projeTrack");
+    const projeViewport = document.getElementById("projeViewport");
+    const projePrev = document.getElementById("projePrev");
+    const projeNext = document.getElementById("projeNext");
+
+    const syncProjeWidth = () => {
+        if (!projeViewport) return;
+        projeViewport.style.setProperty("--proje-w", `${projeViewport.clientWidth}px`);
+    };
+
+    const getProjeStep = () => {
+        const card = projeTrack?.querySelector(".proje-kart:not([hidden])");
+        if (!card || !projeTrack) return 300;
+        const styles = getComputedStyle(projeTrack);
+        const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+        return card.getBoundingClientRect().width + gap;
+    };
+
+    const applyProjeFilter = (filter) => {
+        projeTrack?.querySelectorAll(".proje-kart").forEach((card) => {
+            const match = filter === "tumu" || card.dataset.durum === filter;
+            card.toggleAttribute("hidden", !match);
+        });
+        if (projeViewport) projeViewport.scrollLeft = 0;
+        syncProjeWidth();
+    };
+
+    document.querySelectorAll(".proje-filtre").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".proje-filtre").forEach((b) => {
+                b.classList.toggle("is-active", b === btn);
+            });
+            applyProjeFilter(btn.dataset.filter || "tumu");
+        });
+    });
+
+    projePrev?.addEventListener("click", () => {
+        projeViewport?.scrollBy({ left: -getProjeStep(), behavior: "smooth" });
+    });
+    projeNext?.addEventListener("click", () => {
+        projeViewport?.scrollBy({ left: getProjeStep(), behavior: "smooth" });
+    });
+
+    if (projeViewport) {
+        let isDown = false;
+        let startX = 0;
+        let scrollStart = 0;
+
+        const onMove = (clientX) => {
+            if (!isDown) return;
+            const dx = clientX - startX;
+            projeViewport.scrollLeft = scrollStart - dx;
+        };
+
+        const onUp = () => {
+            if (!isDown) return;
+            isDown = false;
+            projeViewport.classList.remove("is-dragging");
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onUp);
+            document.removeEventListener("touchmove", onTouchMove);
+            document.removeEventListener("touchend", onUp);
+        };
+
+        const onMouseMove = (e) => {
+            e.preventDefault();
+            onMove(e.clientX);
+        };
+
+        const onTouchMove = (e) => {
+            if (e.touches[0]) onMove(e.touches[0].clientX);
+        };
+
+        projeViewport.addEventListener("mousedown", (e) => {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            isDown = true;
+            startX = e.clientX;
+            scrollStart = projeViewport.scrollLeft;
+            projeViewport.classList.add("is-dragging");
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onUp);
+        });
+
+        projeViewport.addEventListener("touchstart", (e) => {
+            if (!e.touches[0]) return;
+            isDown = true;
+            startX = e.touches[0].clientX;
+            scrollStart = projeViewport.scrollLeft;
+            projeViewport.classList.add("is-dragging");
+            document.addEventListener("touchmove", onTouchMove, { passive: true });
+            document.addEventListener("touchend", onUp);
+        }, { passive: true });
+
+        projeViewport.addEventListener("dragstart", (e) => e.preventDefault());
+    }
+
+    window.addEventListener("resize", syncProjeWidth);
+    syncProjeWidth();
 })();
