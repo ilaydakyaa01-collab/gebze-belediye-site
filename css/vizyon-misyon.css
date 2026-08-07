@@ -241,7 +241,12 @@
 }
 
 .kurumsal-grid.kurumsal-grid-genis {
-    align-items: start;
+    align-items: stretch;
+}
+
+.meclis-ust-kart {
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 860px) {
@@ -279,15 +284,30 @@
 }
 
 .meclis-baskan-kart h3 {
-    font-size: 1.75rem;
+    font-size: 1.4rem;
     color: var(--navy);
     font-weight: 700;
     margin-bottom: 0.25rem;
 }
 
 .meclis-baskan-kart span {
-    font-size: 1.25rem;
+    font-size: 0.88rem;
     color: var(--muted);
+}
+
+.meclis-alt-bolum {
+    width: 100%;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.8rem 2rem 2rem;
+    margin-top: 1.8rem;
+}
+
+.meclis-toplam {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 1.2rem;
 }
 
 .meclis-arama-wrap {
@@ -357,8 +377,14 @@
 
 .meclis-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.6rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.4rem;
+}
+
+@media (max-width: 900px) {
+    .meclis-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .meclis-kart {
@@ -401,8 +427,38 @@
     color: var(--muted);
 }
 
+.meclis-sayfalama {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+}
+
+.meclis-sayfa-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.meclis-sayfa-btn:hover {
+    background: var(--bg);
+}
+
+.meclis-sayfa-btn.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+}
+
 @media (max-width: 480px) {
     .meclis-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 }
