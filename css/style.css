@@ -75,7 +75,7 @@ button {
 }
 
 .nav-brand img {
-    height: 48px;
+    height: 36px;
     width: auto;
     mix-blend-mode: screen;
 }
@@ -554,42 +554,43 @@ button {
 
 .hizli-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.8rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
 }
 
 .hizli-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.8rem;
     background: var(--white);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 1.15rem 0.6rem;
-    text-align: center;
+    padding: 0.75rem 1rem;
+    text-align: left;
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
 .hizli-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     background: #eef4fb;
     color: var(--navy);
     display: grid;
     place-items: center;
-    font-size: 1.35rem;
+    font-size: 1.1rem;
+    flex: none;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
 .hizli-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 }
 
 .hizli-item span:last-child {
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--navy);
 }
@@ -607,6 +608,34 @@ button {
 
 /* ========== HABERLER ========== */
 .haber-bolumu { padding: 3.2rem 0 3.8rem; }
+
+.section-header.haber-header-yatay {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    text-align: left;
+}
+
+.haber-baslik-grup {
+    text-align: left;
+}
+
+.haber-header-yatay .tab-group {
+    margin-left: auto;
+}
+
+@media (max-width: 720px) {
+    .haber-header-yatay {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .haber-header-yatay .tab-group {
+        margin-left: 0;
+    }
+}
 
 .section-header {
     text-align: center;
@@ -1324,7 +1353,7 @@ button {
         background: var(--navy);
     }
 
-    .hizli-grid { grid-template-columns: repeat(3, 1fr); }
+    .hizli-grid { grid-template-columns: repeat(2, 1fr); }
     .haber-grid { grid-template-columns: repeat(2, 1fr); }
     .footer-grid { grid-template-columns: 1fr 1fr; }
 
@@ -1346,10 +1375,9 @@ button {
     .ticker-toggle { display: none; }
     .ticker-label { font-size: 0.72rem; padding: 0 0.85rem; }
 
-    .hizli-grid { grid-template-columns: repeat(2, 1fr); }
+    .hizli-grid { grid-template-columns: 1fr; }
     .haber-grid,
     .footer-grid { grid-template-columns: 1fr; }
 
-    .nav-brand img { height: 40px; }
+    .nav-brand img { height: 32px; }
 }
-

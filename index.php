@@ -41,25 +41,6 @@ include 'includes/header.php';
         </div>
     </section>
 
-    <section class="baskan-bar">
-        <div class="container baskan-inner">
-            <div class="baskan-foto-wrap">
-                <img src="img/baskan.png" alt="Zinnur Büyükgöz" class="baskan-foto">
-            </div>
-            <div class="baskan-info">
-                <p class="baskan-title">Belediye Başkanı</p>
-                <h2>Zinnur Büyükgöz</h2>
-            </div>
-            <div class="baskan-social">
-                <a href="https://x.com/zinnurbuyukgoz" target="_blank" rel="noopener" aria-label="X"><i class="bi bi-twitter-x"></i></a>
-                <a href="https://www.facebook.com/zinnurbuyukgoz" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.instagram.com/zinnurbuyukgoz/" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                <a href="https://www.youtube.com/@zinnurbuyukgoz" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-            </div>
-            <a href="#" class="baskan-cta">Başkanı Tanıyın <i class="bi bi-arrow-right"></i></a>
-        </div>
-    </section>
-
     <section class="news-ticker" aria-label="Güncel haberler">
         <div class="ticker-inner">
             <div class="ticker-label">
@@ -103,9 +84,11 @@ include 'includes/header.php';
 
     <section class="haber-bolumu" id="haberler">
         <div class="container">
-            <header class="section-header">
-                <h2 id="sectionTitle">Haberler</h2>
-                <p id="sectionDesc">Belediyemizden güncel gelişmeler.</p>
+            <header class="section-header haber-header-yatay">
+                <div class="haber-baslik-grup">
+                    <h2 id="sectionTitle">Haberler</h2>
+                    <p id="sectionDesc">Belediyemizden güncel gelişmeler.</p>
+                </div>
                 <div class="tab-group" role="tablist">
                     <button type="button" class="tab-btn is-active" data-tab="haber-panel" data-title="Haberler" data-desc="Belediyemizden güncel gelişmeler." role="tab" aria-selected="true">
                         <i class="bi bi-newspaper"></i> Haberler
