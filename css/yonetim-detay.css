@@ -1,0 +1,161 @@
+.yd-ustbilgi {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+}
+
+.yd-ustbilgi a {
+    color: var(--navy);
+}
+
+.yd-baslik {
+    font-size: 1.8rem;
+    color: var(--navy);
+    margin-bottom: 1.5rem;
+}
+
+.yd-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    align-items: start;
+}
+
+.yd-profil {
+    display: flex;
+    gap: 1.5rem;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.yd-foto {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #eef4fb;
+}
+
+.yd-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.yd-foto-yer {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 3rem;
+    color: var(--navy);
+}
+
+.yd-bilgi h2 {
+    color: var(--navy);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.yd-bilgi p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-size: 0.92rem;
+    margin-bottom: 0.6rem;
+}
+
+.yd-bilgi i {
+    color: var(--accent-hot);
+}
+
+.yd-sekmeler {
+    display: flex;
+    gap: 0.3rem;
+    border-bottom: 2px solid var(--line);
+    margin-bottom: 1.5rem;
+}
+
+.yd-tab-btn {
+    padding: 0.8rem 1.3rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+}
+
+.yd-tab-btn.is-active {
+    color: var(--navy);
+    border-bottom-color: var(--accent);
+}
+
+.yd-panel {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.8rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.yd-yan {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.yd-kutu {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.3rem;
+}
+
+.yd-kutu h3 {
+    color: var(--navy);
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.yd-kutu ul li {
+    margin-bottom: 0.6rem;
+}
+
+.yd-kutu ul a {
+    color: var(--text);
+    font-size: 0.88rem;
+}
+
+.yd-kutu ul a:hover {
+    color: var(--accent-hot);
+}
+
+.yd-kutu form input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+
+@media (max-width: 768px) {
+    .yd-grid {
+        grid-template-columns: 1fr;
+    }
+    .yd-profil {
+        flex-direction: column;
+        text-align: center;
+    }
+    .yd-foto {
+        margin: 0 auto;
+    }
+}
