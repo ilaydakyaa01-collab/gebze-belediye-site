@@ -916,3 +916,198 @@
         height: 140px;
     }
 }
+
+/* --- Arabuluculuk Komisyonu --- */
+
+.arabuluculuk-icerik {
+    --metin-olcek: 1;
+}
+
+/* Asıl ve yedek üye bölümleri */
+.arabuluculuk-grup {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Bölüm başlığı iki sütunun tamamını kaplasın */
+.arabuluculuk-grup h3 {
+    grid-column: 1 / -1;
+    font-size: calc(1.05rem * var(--metin-olcek));
+    color: var(--navy);
+    font-weight: 700;
+    padding-bottom: 0.7rem;
+    margin: 0 0 0.2rem;
+    border-bottom: 2px solid var(--navy);
+}
+
+/* Üye kartları */
+.arabuluculuk-uye {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+
+    min-height: 105px;
+    padding: 1rem 1.1rem;
+    margin: 0;
+
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.arabuluculuk-uye:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.arabuluculuk-uye strong {
+    color: var(--navy);
+    font-size: calc(1rem * var(--metin-olcek));
+    font-weight: 700;
+}
+
+.arabuluculuk-uye span {
+    color: var(--text);
+    font-size: calc(0.95rem * var(--metin-olcek));
+    line-height: 1.5;
+}
+
+.arabuluculuk-uye small {
+    color: var(--muted);
+    font-size: calc(0.85rem * var(--metin-olcek));
+}
+
+/* Sidebar */
+.kurumsal-grid {
+    align-items: start;
+}
+
+.kurumsal-sidebar {
+    align-self: start;
+}
+
+/* Küçük ekran */
+@media (max-width: 700px) {
+
+    .arabuluculuk-grup {
+        grid-template-columns: 1fr;
+    }
+
+    .kurumsal-sidebar {
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+/* --- Etik Komisyonu --- */
+
+.etik-icerik {
+    --metin-olcek: 1;
+}
+
+.etik-bolum {
+    margin-bottom: 2.5rem;
+}
+
+.etik-bolum:last-child {
+    margin-bottom: 0;
+}
+
+.etik-bolum h3 {
+    font-size: calc(1.05rem * var(--metin-olcek));
+    color: var(--navy);
+    font-weight: 700;
+    padding-bottom: 0.7rem;
+    margin: 0 0 1.2rem;
+    border-bottom: 2px solid var(--navy);
+}
+
+/* Etik davranış ilkeleri */
+
+.etik-ilke-listesi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.etik-ilke-listesi li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: var(--text);
+    font-size: calc(1rem * var(--metin-olcek));
+    line-height: 1.6;
+}
+
+.etik-ilke-listesi li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+/* Etik komisyonu üye kartları */
+
+.etik-komisyon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.etik-uye-kart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+
+    min-height: 105px;
+    padding: 1rem 1.1rem;
+
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.etik-uye-kart:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.etik-uye-kart strong {
+    color: var(--navy);
+    font-size: calc(1rem * var(--metin-olcek));
+    font-weight: 700;
+}
+
+.etik-uye-kart span {
+    color: var(--text);
+    font-size: calc(0.95rem * var(--metin-olcek));
+    line-height: 1.5;
+}
+
+.etik-uye-kart small {
+    color: var(--muted);
+    font-size: calc(0.85rem * var(--metin-olcek));
+}
+
+/* Küçük ekran */
+
+@media (max-width: 700px) {
+    .etik-komisyon-grid {
+        grid-template-columns: 1fr;
+    }
+}
