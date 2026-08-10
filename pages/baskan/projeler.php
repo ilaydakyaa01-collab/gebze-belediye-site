@@ -187,11 +187,10 @@ include '../../includes/header.php';
         gap: 32px;
     }
 
-   .proje-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    align-items: start;
+    .proje-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
     .proje-kart {
         background: #fff;
@@ -200,7 +199,15 @@ include '../../includes/header.php';
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        height: fit-content;
         transition: all .25s ease;
+    }
+
+    .proje-grid .proje-kart {
+    width: auto;
+    aspect-ratio: auto;
+    flex: none;
+    background: #fff;
     }
     .proje-kart:hover {
         transform: translateY(-5px);
@@ -251,7 +258,7 @@ include '../../includes/header.php';
     .proje-durum.devam { color: #d97706; }
     .proje-durum.planlanan { color: #6b7280; }
 
-    .proje-meta { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
+    .proje-meta { padding: 16px 18px 18px; display: flex; flex-direction: column; }
     .proje-kategori-etiket {
         font-size: 12px;
         font-weight: 700;
