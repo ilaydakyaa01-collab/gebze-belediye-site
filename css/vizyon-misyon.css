@@ -462,3 +462,457 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* --- Başkan Yardımcıları: büyük fotoğraflı minimal kart --- */
+.baskan-yrd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+}
+
+.baskan-yrd-kart {
+    display: block;
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    aspect-ratio: 3 / 4;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.baskan-yrd-kart:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 26, 51, 0.2);
+}
+
+.baskan-yrd-kart img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.baskan-yrd-kart:hover img {
+    transform: scale(1.05);
+}
+
+.baskan-yrd-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1rem 0.9rem 0.9rem;
+    background: linear-gradient(to top, rgba(0, 26, 51, 0.94) 0%, rgba(0, 26, 51, 0.6) 65%, transparent 100%);
+    color: var(--white);
+}
+
+.baskan-yrd-overlay h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.15rem;
+}
+
+.baskan-yrd-overlay span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.baskan-yrd-linkler {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.7rem;
+    margin-top: 0.55rem;
+}
+
+.baskan-yrd-linkler a {
+    font-size: 0.7rem;
+    color: var(--white);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    opacity: 0.9;
+}
+
+.baskan-yrd-linkler a:hover {
+    opacity: 1;
+}
+
+@media (max-width: 700px) {
+    .baskan-yrd-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .baskan-yrd-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Başkan Yardımcısı Detay Sayfası --- */
+.yrd-detay-ust {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+}
+
+.mudurluk-detay-ust {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    margin-bottom: 1.4rem;
+}
+
+.mudurluk-detay-ust img {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius);
+    object-fit: cover;
+    flex: none;
+    box-shadow: var(--shadow);
+}
+
+.mudurluk-detay-bilgi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.mudurluk-detay-bilgi h3 {
+    font-size: 1.1rem;
+    color: var(--navy);
+    font-weight: 700;
+}
+
+.mudurluk-detay-satir {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.mudurluk-detay-satir i {
+    color: var(--navy);
+    font-size: 0.85rem;
+    flex: none;
+}
+
+.mudurluk-detay-baslik.section-header h2 {
+    font-size: 1.35rem;
+}
+
+.yrd-detay-ust img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+    box-shadow: var(--shadow);
+}
+
+.yrd-detay-ust h2 {
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 0.2rem;
+}
+
+.yrd-detay-unvan {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.yrd-birim-liste {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.yrd-birim-satir {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 0.8rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.yrd-birim-satir:hover {
+    background: #e4ebf3;
+}
+
+.yrd-birim-satir:hover .yrd-birim-adi {
+    color: var(--navy);
+    text-decoration: underline;
+}
+
+.yrd-birim-adi {
+    font-size: 0.92rem;
+    color: var(--text);
+}
+
+.yrd-birim-sorumlu {
+    font-size: 0.88rem;
+    color: var(--navy);
+    font-weight: 600;
+    text-align: right;
+    flex: none;
+}
+
+@media (max-width: 480px) {
+    .yrd-birim-satir {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+
+    .yrd-birim-sorumlu {
+        text-align: left;
+    }
+}
+
+/* --- Başkan Yardımcısı Detay: Biyografi/Bağlı Birimler sekmeleri --- */
+.yrd-tab-group {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.4rem;
+}
+
+.yrd-tab {
+    padding: 0.55rem 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    margin-right: 1.2rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.yrd-tab:hover {
+    color: var(--navy);
+}
+
+.yrd-tab.active {
+    color: var(--navy);
+    border-bottom-color: var(--accent);
+}
+
+/* --- Müdürlükler: dikey kart --- */
+.mudurluk-tam-kart {
+    width: 100%;
+    background: var(--white);
+}
+
+.mudurluk-ust-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+}
+
+.mudurluk-baslik {
+    margin-bottom: 0;
+}
+
+.mudurluk-arac-grup {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.kurumsal-hamburger-wrap {
+    position: relative;
+}
+
+.kurumsal-hamburger-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.kurumsal-hamburger-btn:hover {
+    background: var(--bg);
+}
+
+.kurumsal-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 210px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 16px 36px rgba(0, 26, 51, 0.22);
+    padding: 0.4rem;
+    z-index: 50;
+}
+
+.kurumsal-dropdown .kurumsal-sidebar {
+    box-shadow: none;
+    padding: 0.3rem;
+}
+
+.kurumsal-dropdown .kurumsal-sidebar h3 {
+    font-size: 0.68rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.kurumsal-dropdown .kurumsal-sidebar li a {
+    font-size: 0.66rem;
+    padding: 0.28rem 0.4rem;
+}
+
+.mudurluk-arama-wrap {
+    width: 260px;
+    margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+    .mudurluk-ust-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mudurluk-arac-grup {
+        width: 100%;
+    }
+
+    .mudurluk-arama-wrap {
+        width: 100%;
+        flex: 1;
+    }
+
+    .kurumsal-dropdown {
+        right: auto;
+        left: 0;
+        width: min(280px, 90vw);
+    }
+}
+
+.mudurluk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+}
+
+.mudurluk-kart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    padding: 0.9rem;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.mudurluk-kart:hover {
+    transform: translateY(-4px);
+    background: var(--white);
+    box-shadow: 0 14px 30px rgba(0, 26, 51, 0.16);
+}
+
+.mudurluk-kart img {
+    width: 78px;
+    height: 78px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    flex: none;
+}
+
+.mudurluk-kart-icerik {
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.mudurluk-kart-icerik h4 {
+    font-size: 0.9rem;
+    color: var(--navy);
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.mudurluk-sorumlu {
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.mudurluk-eposta {
+    font-size: 0.75rem;
+    color: var(--muted);
+    word-break: break-word;
+}
+
+.mudurluk-linkler {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.7rem;
+    margin-top: 0.35rem;
+}
+
+.mudurluk-linkler a {
+    font-size: 0.66rem;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.mudurluk-linkler a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .mudurluk-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .mudurluk-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .mudurluk-kart {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .mudurluk-kart img {
+        width: 100%;
+        height: 140px;
+    }
+}
