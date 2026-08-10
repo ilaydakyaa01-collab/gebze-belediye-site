@@ -45,7 +45,7 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/mudurlukler.php">Müdürlükler</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/baskan-yardimcilari.php">Başkan Yardımcıları</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/baskan-danismani.php">Başkan Danışmanı</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/baskan-danismanlari.php">Başkan Danışmanı</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/arabuluculuk-komisyonu.php">Arabuluculuk Komisyonu</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/etik-komisyonu.php">Etik Komisyonu</a></li>
                 </ul>
