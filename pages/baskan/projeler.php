@@ -16,10 +16,9 @@ $durumMap = [
 $aktifDurumSlug = isset($_GET['durum']) && isset($durumMap[$_GET['durum']]) ? $_GET['durum'] : '';
 $aktifKategoriSlug = isset($_GET['kategori']) ? preg_replace('/[^a-z0-9\-]/', '', $_GET['kategori']) : '';
 
-// --- SAYFALANDIRMA (PAGINATION) AYARLARI ---
 $sayfa = isset($_GET['sayfa']) && is_numeric($_GET['sayfa']) ? (int)$_GET['sayfa'] : 1;
 if ($sayfa < 1) $sayfa = 1;
-$limit = 9; // Her sayfada gösterilecek proje sayısı
+$limit = 9;
 $offset = ($sayfa - 1) * $limit;
 
 $kategoriler = [];
@@ -42,7 +41,6 @@ $toplamProjeler = 0;
 $toplamSayfa = 1;
 
 try {
-    // Filtreleme Koşulları
     $whereSql = " WHERE 1=1";
     $params = [];
 
@@ -55,7 +53,6 @@ try {
         $params[':kategori_id'] = $aktifKategori['id'];
     }
 
-    // 1. Toplam Proje Sayısını Bul (Sayfa sayısını hesaplamak için)
     $countSql = "SELECT COUNT(*) FROM projeler p" . $whereSql;
     $stmtCount = $conn->prepare($countSql);
     $stmtCount->execute($params);
@@ -65,7 +62,6 @@ try {
     if ($toplamSayfa < 1) $toplamSayfa = 1;
     if ($sayfa > $toplamSayfa) $sayfa = $toplamSayfa;
 
-    // 2. Sayfaya Göre 9 Adet Proje Çek (LIMIT / OFFSET)
     $sql = "SELECT p.*, k.ad AS kategori_ad, k.slug AS kategori_slug
             FROM projeler p
             LEFT JOIN proje_kategorileri k ON k.id = p.kategori_id"
@@ -86,7 +82,6 @@ try {
     $projeler = [];
 }
 
-// Filtre ve Sayfa URL Oluşturucu
 function projeFiltreUrl($basePath, $durum, $kategori, $sayfaNo = 1)
 {
     $q = [];
@@ -125,11 +120,42 @@ include '../../includes/header.php';
         font-size: 1rem;
     }
 
+    .proje-sekme-satir {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 34px;
+    }
+
+    .proje-sekme-satir .proje-sekme {
+        margin-bottom: 0;
+    }
+
+    .proje-hamburger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        border: 1px solid #e3e6ea;
+        background: #fff;
+        font-size: 1.3rem;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: background .2s ease, border-color .2s ease;
+    }
+    .proje-hamburger:hover {
+        border-color: var(--brand-color, #0f5d3c);
+        color: var(--brand-color, #0f5d3c);
+    }
+
     .proje-sekme {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 34px;
     }
     .proje-sekme a {
         padding: 9px 18px;
@@ -152,10 +178,7 @@ include '../../includes/header.php';
     }
 
     .proje-layout {
-        display: grid;
-        grid-template-columns: 1fr 280px;
-        gap: 40px;
-        align-items: start;
+        display: block;
     }
 
     .proje-sol-alan {
@@ -164,11 +187,11 @@ include '../../includes/header.php';
         gap: 32px;
     }
 
-    /* Kart Izgarası */
-    .proje-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 22px;
+   .proje-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    align-items: start;
     }
     .proje-kart {
         background: #fff;
@@ -183,10 +206,10 @@ include '../../includes/header.php';
         transform: translateY(-5px);
         box-shadow: 0 14px 28px rgba(0, 0, 0, 0.07);
     }
-    
+
     .proje-gorsel {
         position: relative;
-        height: 165px;
+        height: 280px;
         overflow: hidden;
         background: #f1f2f4;
     }
@@ -201,7 +224,6 @@ include '../../includes/header.php';
         transform: scale(1.04);
     }
 
-    /* Durum Etiketi */
     .proje-durum {
         position: absolute;
         top: 12px;
@@ -229,18 +251,17 @@ include '../../includes/header.php';
     .proje-durum.devam { color: #d97706; }
     .proje-durum.planlanan { color: #6b7280; }
 
-    .proje-meta { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; }
+    .proje-meta { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
     .proje-kategori-etiket {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .05em;
         color: var(--brand-color, #0f5d3c);
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
-    .proje-meta h3 { font-size: 0.95rem; font-weight: 700; margin: 0; line-height: 1.35; color: #1a1a1a; }
+    .proje-meta h3 { font-size: 1.08rem; font-weight: 700; margin: 0; line-height: 1.35; color: #1a1a1a; }
 
-    /* Sayfalandırma (Pagination) Stilleri */
     .proje-pagination {
         display: flex;
         align-items: center;
@@ -278,14 +299,76 @@ include '../../includes/header.php';
         pointer-events: none;
     }
 
-    .proje-yan { display: flex; flex-direction: column; gap: 24px; }
+    .proje-yan-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .3s ease;
+    }
+    .proje-yan-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .proje-yan {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 320px;
+        max-width: 85vw;
+        background: #fff;
+        z-index: 3000;
+        padding: 1.6rem 1.4rem 2rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        transform: translateX(100%);
+        transition: transform .3s ease;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    }
+    .proje-yan.is-open {
+        transform: translateX(0);
+    }
+
+    .proje-yan-baslik-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #edeff1;
+    }
+    .proje-yan-baslik-bar h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    .proje-yan-kapat {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #f1f2f4;
+        border: none;
+        font-size: 1rem;
+        color: #1a1a1a;
+        cursor: pointer;
+    }
+    .proje-yan-kapat:hover { background: #e3e6ea; }
+
     .yan-kutu {
         background: #f8f9fa;
         border: 1px solid #edeff1;
         border-radius: 14px;
-        padding: 24px;
+        padding: 20px;
     }
-    .yan-kutu h3 { font-size: 1.05rem; font-weight: 700; margin: 0 0 16px; }
+    .yan-kutu h3 { font-size: 1.02rem; font-weight: 700; margin: 0 0 14px; }
     .yan-kutu ul { list-style: none; margin: 0; padding: 0; }
     .yan-kutu ul li + li { margin-top: 10px; padding-top: 10px; border-top: 1px solid #edeff1; }
     .yan-kutu ul li a {
@@ -302,12 +385,92 @@ include '../../includes/header.php';
 
     .bos-mesaj { grid-column: 1 / -1; color: #8a919a; padding: 40px 0; text-align: center; }
 
+    .proje-tetikleyici {
+        width: 100%;
+        border: none;
+        text-align: left;
+        font-family: inherit;
+        cursor: pointer;
+    }
+
+    .proje-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 4000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+    .proje-modal-backdrop[hidden] { display: none !important; }
+
+    .proje-modal {
+        position: relative;
+        background: #fff;
+        border-radius: 16px;
+        max-width: 640px;
+        width: 100%;
+        max-height: 88vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .proje-modal-kapat {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 2;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.92);
+        border: none;
+        display: grid;
+        place-items: center;
+        font-size: 1rem;
+        color: #1a1a1a;
+        cursor: pointer;
+    }
+
+    .proje-modal-foto {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .proje-modal-icerik {
+        padding: 24px 28px 30px;
+    }
+
+    .proje-modal-icerik h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 10px 0 14px;
+    }
+
+    .proje-modal-durum {
+        position: static;
+        display: inline-flex;
+        margin-bottom: 1rem;
+    }
+
+    .proje-modal-metin {
+        color: #3a3f45;
+        font-size: 0.98rem;
+        line-height: 1.8;
+        white-space: pre-line;
+        margin-top: 8px;
+    }
+
     @media (max-width: 980px) {
-        .proje-layout { grid-template-columns: 1fr; }
         .proje-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 580px) {
         .proje-grid { grid-template-columns: 1fr; }
+        .proje-yan { width: 100%; max-width: 100%; }
     }
 </style>
 
@@ -324,12 +487,17 @@ include '../../includes/header.php';
             <p>Tüm projeleri buradan görüntüleyebilirsiniz.</p>
         </div>
 
-        <nav class="proje-sekme">
-            <a href="<?php echo projeFiltreUrl($basePath, '', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === '' ? 'is-active' : ''; ?>">Tümü</a>
-            <a href="<?php echo projeFiltreUrl($basePath, 'planlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'planlanan' ? 'is-active' : ''; ?>">Planlanan</a>
-            <a href="<?php echo projeFiltreUrl($basePath, 'devam-eden', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'devam-eden' ? 'is-active' : ''; ?>">Devam Eden</a>
-            <a href="<?php echo projeFiltreUrl($basePath, 'tamamlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'tamamlanan' ? 'is-active' : ''; ?>">Tamamlanan</a>
-        </nav>
+        <div class="proje-sekme-satir">
+            <nav class="proje-sekme">
+                <a href="<?php echo projeFiltreUrl($basePath, '', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === '' ? 'is-active' : ''; ?>">Tümü</a>
+                <a href="<?php echo projeFiltreUrl($basePath, 'planlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'planlanan' ? 'is-active' : ''; ?>">Planlanan</a>
+                <a href="<?php echo projeFiltreUrl($basePath, 'devam-eden', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'devam-eden' ? 'is-active' : ''; ?>">Devam Eden</a>
+                <a href="<?php echo projeFiltreUrl($basePath, 'tamamlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'tamamlanan' ? 'is-active' : ''; ?>">Tamamlanan</a>
+            </nav>
+            <button type="button" class="proje-hamburger" id="projeHamburger" aria-label="Menüyü aç">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
 
         <div class="proje-layout">
             <div class="proje-sol-alan">
@@ -343,7 +511,13 @@ include '../../includes/header.php';
                             $durum = $proje['durum'] ?? 'Tamamlanan';
                             $durumClass = $durum === 'Devam Eden' ? 'devam' : ($durum === 'Planlanan' ? 'planlanan' : '');
                             ?>
-                            <article class="proje-kart">
+                            <button type="button" class="proje-kart proje-tetikleyici"
+                                data-baslik="<?php echo htmlspecialchars($proje['baslik']); ?>"
+                                data-resim="<?php echo htmlspecialchars($img); ?>"
+                                data-kategori="<?php echo htmlspecialchars($proje['kategori_ad'] ?? ''); ?>"
+                                data-durum="<?php echo htmlspecialchars($durum); ?>"
+                                data-durum-class="<?php echo htmlspecialchars($durumClass); ?>"
+                                data-aciklama="<?php echo htmlspecialchars($proje['aciklama'] ?? ''); ?>">
                                 <div class="proje-gorsel">
                                     <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($proje['baslik']); ?>" loading="lazy">
                                     <span class="proje-durum <?php echo $durumClass; ?>"><?php echo htmlspecialchars($durum); ?></span>
@@ -354,74 +528,152 @@ include '../../includes/header.php';
                                     <?php endif; ?>
                                     <h3><?php echo htmlspecialchars($proje['baslik']); ?></h3>
                                 </div>
-                            </article>
+                            </button>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p class="bos-mesaj">Gösterilecek proje bulunamadı.</p>
                     <?php endif; ?>
                 </div>
 
-                <!-- SAYFALANDIRMA (PAGINATION) -->
                 <?php if ($toplamSayfa > 1): ?>
                     <nav class="proje-pagination">
-                        <!-- Önceki Sayfa -->
                         <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, $aktifKategoriSlug, $sayfa - 1); ?>" class="<?php echo $sayfa <= 1 ? 'disabled' : ''; ?>">
                             <i class="bi bi-chevron-left"></i>
                         </a>
 
-                        <!-- Sayfa Numaraları -->
                         <?php for ($p = 1; $p <= $toplamSayfa; $p++): ?>
                             <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, $aktifKategoriSlug, $p); ?>" class="<?php echo $p === $sayfa ? 'active' : ''; ?>">
                                 <?php echo $p; ?>
                             </a>
                         <?php endfor; ?>
 
-                        <!-- Sonraki Sayfa -->
                         <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, $aktifKategoriSlug, $sayfa + 1); ?>" class="<?php echo $sayfa >= $toplamSayfa ? 'disabled' : ''; ?>">
                             <i class="bi bi-chevron-right"></i>
                         </a>
                     </nav>
                 <?php endif; ?>
             </div>
-
-            <aside class="proje-yan">
-                <div class="yan-kutu">
-                    <h3>Başkan</h3>
-                    <ul>
-                        <li><a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Özgeçmiş <i class="bi bi-chevron-right"></i></a></li>
-                        <li><a class="is-active" href="<?php echo $basePath; ?>pages/baskan/projeler.php">Projeler <i class="bi bi-chevron-right"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="yan-kutu">
-                    <h3>Kategoriler</h3>
-                    <ul>
-                        <li>
-                            <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, ''); ?>" class="<?php echo $aktifKategoriSlug === '' ? 'is-active' : ''; ?>">
-                                Tüm Kategoriler <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                        <?php foreach ($kategoriler as $k): ?>
-                            <li>
-                                <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, $k['slug']); ?>" class="<?php echo $aktifKategoriSlug === $k['slug'] ? 'is-active' : ''; ?>">
-                                    <?php echo htmlspecialchars($k['ad']); ?> <i class="bi bi-chevron-right"></i>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-
-                <div class="yan-kutu">
-                    <h3>Bizi Takip Edin</h3>
-                    <ul>
-                        <li><a href="https://wa.me/902626420430" target="_blank" rel="noopener">WhatsApp <i class="bi bi-whatsapp"></i></a></li>
-                        <li><a href="https://www.facebook.com/gebzebelediye" target="_blank" rel="noopener">Facebook <i class="bi bi-facebook"></i></a></li>
-                        <li><a href="https://www.instagram.com/gebze_belediyesi" target="_blank" rel="noopener">Instagram <i class="bi bi-instagram"></i></a></li>
-                    </ul>
-                </div>
-            </aside>
         </div>
     </div>
 </main>
+
+<div class="proje-yan-backdrop" id="projeYanBackdrop"></div>
+<aside class="proje-yan" id="projeYanPanel">
+    <div class="proje-yan-baslik-bar">
+        <h2>Menü</h2>
+        <button type="button" class="proje-yan-kapat" id="projeYanKapat" aria-label="Menüyü kapat">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="yan-kutu">
+        <h3>Başkan</h3>
+        <ul>
+            <li><a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Özgeçmiş <i class="bi bi-chevron-right"></i></a></li>
+            <li><a class="is-active" href="<?php echo $basePath; ?>pages/baskan/projeler.php">Projeler <i class="bi bi-chevron-right"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="yan-kutu">
+        <h3>Kategoriler</h3>
+        <ul>
+            <li>
+                <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, ''); ?>" class="<?php echo $aktifKategoriSlug === '' ? 'is-active' : ''; ?>">
+                    Tüm Kategoriler <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            <?php foreach ($kategoriler as $k): ?>
+                <li>
+                    <a href="<?php echo projeFiltreUrl($basePath, $aktifDurumSlug, $k['slug']); ?>" class="<?php echo $aktifKategoriSlug === $k['slug'] ? 'is-active' : ''; ?>">
+                        <?php echo htmlspecialchars($k['ad']); ?> <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <div class="yan-kutu">
+        <h3>Bizi Takip Edin</h3>
+        <ul>
+            <li><a href="https://wa.me/902626420430" target="_blank" rel="noopener">WhatsApp <i class="bi bi-whatsapp"></i></a></li>
+            <li><a href="https://www.facebook.com/gebzebelediye" target="_blank" rel="noopener">Facebook <i class="bi bi-facebook"></i></a></li>
+            <li><a href="https://www.instagram.com/gebze_belediyesi" target="_blank" rel="noopener">Instagram <i class="bi bi-instagram"></i></a></li>
+        </ul>
+    </div>
+</aside>
+
+<div class="proje-modal-backdrop" id="projeModalBackdrop" hidden>
+    <div class="proje-modal">
+        <button type="button" class="proje-modal-kapat" id="projeModalKapat"><i class="bi bi-x-lg"></i></button>
+        <img id="projeModalResim" src="" alt="" class="proje-modal-foto">
+        <div class="proje-modal-icerik">
+            <span id="projeModalKategori" class="proje-kategori-etiket"></span>
+            <h2 id="projeModalBaslik"></h2>
+            <span id="projeModalDurum" class="proje-durum proje-modal-durum"></span>
+            <div id="projeModalAciklama" class="proje-modal-metin"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.getElementById('projeHamburger');
+    const panel = document.getElementById('projeYanPanel');
+    const backdrop = document.getElementById('projeYanBackdrop');
+    const kapatBtn = document.getElementById('projeYanKapat');
+
+    function panelAc() {
+        panel.classList.add('is-open');
+        backdrop.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function panelKapat() {
+        panel.classList.remove('is-open');
+        backdrop.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', panelAc);
+    kapatBtn.addEventListener('click', panelKapat);
+    backdrop.addEventListener('click', panelKapat);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') panelKapat();
+    });
+
+    const projeModalBackdrop = document.getElementById('projeModalBackdrop');
+    const projeModalKapat = document.getElementById('projeModalKapat');
+    const projeModalResim = document.getElementById('projeModalResim');
+    const projeModalBaslik = document.getElementById('projeModalBaslik');
+    const projeModalKategori = document.getElementById('projeModalKategori');
+    const projeModalDurum = document.getElementById('projeModalDurum');
+    const projeModalAciklama = document.getElementById('projeModalAciklama');
+
+    document.querySelectorAll('.proje-tetikleyici').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            projeModalResim.src = btn.dataset.resim;
+            projeModalResim.alt = btn.dataset.baslik;
+            projeModalBaslik.textContent = btn.dataset.baslik;
+            projeModalKategori.textContent = btn.dataset.kategori;
+            projeModalDurum.textContent = btn.dataset.durum;
+            projeModalDurum.className = 'proje-durum proje-modal-durum ' + (btn.dataset.durumClass || '');
+            projeModalAciklama.textContent = btn.dataset.aciklama || 'Bu proje için henüz açıklama eklenmemiştir.';
+            projeModalBackdrop.hidden = false;
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function projeModalKapatFn() {
+        projeModalBackdrop.hidden = true;
+        document.body.style.overflow = '';
+    }
+
+    projeModalKapat.addEventListener('click', projeModalKapatFn);
+    projeModalBackdrop.addEventListener('click', function (e) {
+        if (e.target === projeModalBackdrop) projeModalKapatFn();
+    });
+});
+</script>
 
 <?php include '../../includes/footer.php'; ?>
