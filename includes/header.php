@@ -42,11 +42,14 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/ilkelerimiz.php">İlkelerimiz</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/enerji-politikamiz.php">Enerji Politikamız</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/belediye-meclisi.php">Belediye Meclisi</a></li>
-                    <li><a href="#">Müdürlükler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/mudurlukler.php">Müdürlükler</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/baskan-yardimcilari.php">Başkan Yardımcıları</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/baskan-danismani.php">Başkan Danışmanı</a></li>
+
                 </ul>
             </li>
-            <li><a href="#">Gebze</a></li>
+            <li><a href="#">Gebze</a></li>  
             <li><a href="#">Hizmetler</a></li>
             <li><a href="#">E-Belediye</a></li>
             <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>
