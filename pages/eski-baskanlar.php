@@ -19,6 +19,17 @@ include '../includes/header.php';
 <style>
     .eb-bolumu { padding: 7rem 0 5rem; }
 
+    .eb-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 0.6rem;
+    }
+    .eb-breadcrumb a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .eb-breadcrumb a:hover { color: var(--accent-hot); }
+
     .eb-ustbaslik-satir {
         display: flex;
         align-items: flex-start;
@@ -146,6 +157,12 @@ include '../includes/header.php';
 
 <section class="eb-bolumu page-content">
     <div class="container">
+        <nav class="eb-breadcrumb">
+            <a href="<?php echo $basePath; ?>index.php"><i class="bi bi-house"></i> Anasayfa</a>
+            <span>/</span>
+            <span>Eski Başkanlar</span>
+        </nav>
+
         <div class="eb-ustbaslik-satir">
             <div class="eb-ustbaslik">
                 <h1>Eski Başkanlar</h1>

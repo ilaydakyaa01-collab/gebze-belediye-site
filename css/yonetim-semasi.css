@@ -319,8 +319,6 @@
     box-shadow: var(--shadow);
     padding: 0.5rem;
     min-width: 240px;
-    max-height: 340px;
-    overflow-y: auto;
     z-index: 30;
 }
 
