@@ -16,14 +16,14 @@ $kurumsalMenu = [
     'baskan-yrd'      => ['label' => 'Başkan Yardımcıları', 'href' => 'baskan-yardimcilari.php'],
     'baskan-dan'      => ['label' => 'Başkan Danışmanları', 'href' => 'baskan-danismanlari.php'],
     'mudurlukler'     => ['label' => 'Müdürlükler',         'href' => 'mudurlukler.php'],
-    'eski-baskanlar'  => ['label' => 'Eski Başkanlar',      'href' => '#'],
+    'eski-baskanlar'  => ['label' => 'Eski Başkanlar',      'href' => 'eski-baskanlar.php'],
     'arabuluculuk'    => ['label' => 'Arabuluculuk Komisyonu', 'href' => 'arabuluculuk-komisyonu.php'],
     'etik'            => ['label' => 'Etik Komisyonu',      'href' => 'etik-komisyonu.php'],
-    'meclis-kararlari'=> ['label' => 'Meclis Kararları',    'href' => '#'],
-    'kimlik'          => ['label' => 'Kurumsal Kimlik',     'href' => '#'],
-    'raporlar'        => ['label' => 'Kurumsal Raporlar',   'href' => '#'],
-    'dokumanlar'      => ['label' => 'Kurumsal Dökümanlar', 'href' => '#'],
-    'yayinlar'        => ['label' => 'Yayınlar',            'href' => '#'],
+    'meclis-kararlari'=> ['label' => 'Meclis Kararları',    'href' => 'meclis-kararlari.php'],
+    'kimlik'          => ['label' => 'Kurumsal Kimlik',     'href' => 'kurumsal-kimlik.php'],
+    'raporlar'        => ['label' => 'Kurumsal Raporlar',   'href' => 'kurumsal-raporlar.php'],
+    'dokumanlar'      => ['label' => 'Kurumsal Dökümanlar', 'href' => 'kurumsal-dokumanlar.php'],
+    'yayinlar'        => ['label' => 'Yayınlar',            'href' => 'yayinlar.php'],
 ];
 ?>
 <aside class="kurumsal-sidebar">

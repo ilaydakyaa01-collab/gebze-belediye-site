@@ -25,25 +25,15 @@ include '../includes/header.php';
 
 function birimButonu($basePath, $birim) {
     $resim = !empty($birim['resim']) ? $basePath . htmlspecialchars($birim['resim']) : '';
-
-    $pdf = '';
-    if (!empty($birim['sema_pdf'])) {
-        $pdf = str_starts_with($birim['sema_pdf'], 'http')
-            ? htmlspecialchars($birim['sema_pdf'])
-            : $basePath . htmlspecialchars($birim['sema_pdf']);
-    }
-
     echo '<button type="button" class="yonetim-birim-box yonetim-birim-tetikleyici"
         data-ad="' . htmlspecialchars($birim['sorumlu_ad_soyad']) . '"
         data-birim="' . htmlspecialchars($birim['birim_adi']) . '"
         data-resim="' . $resim . '"
         data-telefon="' . htmlspecialchars($birim['telefon'] ?? '') . '"
         data-email="' . htmlspecialchars($birim['email'] ?? '') . '"
-        data-adres="' . htmlspecialchars($birim['adres'] ?? '') . '"
         data-gorevler="' . htmlspecialchars($birim['gorevler'] ?? '') . '"
         data-biyografi="' . htmlspecialchars($birim['biyografi'] ?? '') . '"
-        data-yonetmelik="' . htmlspecialchars($birim['yonetmelik'] ?? '') . '"
-        data-pdf="' . $pdf . '">
+        data-yonetmelik="' . htmlspecialchars($birim['yonetmelik'] ?? '') . '">
         <i class="bi bi-building yonetim-birim-icon"></i>
         <div class="yonetim-birim-metin">
             <strong>' . htmlspecialchars($birim['birim_adi']) . '</strong>
@@ -71,23 +61,23 @@ function birimButonu($basePath, $birim) {
                     Kurumsal <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="kurumsal-dropdown" id="kurumsalDropdown" hidden>
-                    <a href="#">Vizyonumuz</a>
-                    <a href="#">Misyonumuz</a>
-                    <a href="#">İlkelerimiz</a>
-                    <a href="#">Enerji Politikamız</a>
-                    <a href="#">Belediye Meclisi</a>
-                    <a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a>
-                    <a href="#">Başkan Yardımcıları</a>
-                    <a href="#">Başkan Danışmanları</a>
-                    <a href="#">Müdürlükler</a>
-                    <a href="#">Eski Başkanlar</a>
-                    <a href="#">Arabuluculuk Komisyonu</a>
-                    <a href="#">Etik Komisyonu</a>
-                    <a href="#">Meclis Kararları</a>
-                    <a href="#">Kurumsal Kimlik</a>
-                    <a href="#">Kurumsal Raporlar</a>
-                    <a href="#">Kurumsal Dökümanlar</a>
-                    <a href="#">Yayınlar</a>
+                    <a href="<?php echo $basePath; ?>pages/vizyonumuz.php">Vizyonumuz</a>
+                    <a href="<?php echo $basePath; ?>pages/misyonumuz.php">Misyonumuz</a>
+                    <a href="<?php echo $basePath; ?>pages/ilkelerimiz.php">İlkelerimiz</a>
+                    <a href="<?php echo $basePath; ?>pages/enerji-politikamiz.php">Enerji Politikamız</a>
+                    <a href="<?php echo $basePath; ?>pages/belediye-meclisi.php">Belediye Meclisi</a>
+                    <a href="#" class="is-active">Yönetim Şeması</a>
+                    <a href="<?php echo $basePath; ?>pages/baskan-yardimcilari.php">Başkan Yardımcıları</a>
+                    <a href="<?php echo $basePath; ?>pages/baskan-danismanlari.php">Başkan Danışmanları</a>
+                    <a href="<?php echo $basePath; ?>pages/mudurlukler.php">Müdürlükler</a>
+                    <a href="<?php echo $basePath; ?>pages/eski-baskanlar.php">Eski Başkanlar</a>
+                    <a href="<?php echo $basePath; ?>pages/arabuluculuk-komisyonu.php">Arabuluculuk Komisyonu</a>
+                    <a href="<?php echo $basePath; ?>pages/etik-komisyonu.php">Etik Komisyonu</a>
+                    <a href="<?php echo $basePath; ?>pages/meclis-kararlari.php">Meclis Kararları</a>
+                    <a href="<?php echo $basePath; ?>pages/kurumsal-kimlik.php">Kurumsal Kimlik</a>
+                    <a href="<?php echo $basePath; ?>pages/kurumsal-raporlar.php">Kurumsal Raporlar</a>
+                    <a href="<?php echo $basePath; ?>pages/kurumsal-dokumanlar.php">Kurumsal Dökümanlar</a>
+                    <a href="<?php echo $basePath; ?>pages/yayinlar.php">Yayınlar</a>
                 </div>
             </div>
         </div>
@@ -166,7 +156,6 @@ function birimButonu($basePath, $birim) {
 
                 <p id="modalTelefon"><i class="bi bi-telephone"></i> <span></span></p>
                 <p id="modalEmail"><i class="bi bi-envelope"></i> <span></span></p>
-                <p id="modalAdres"><i class="bi bi-geo-alt"></i> <span></span></p>
             </div>
 
             <div class="yonetim-modal-sag">
@@ -175,12 +164,7 @@ function birimButonu($basePath, $birim) {
                     <button type="button" class="yonetim-sekme-btn" data-sekme="yonetmelik">Müdürlük Yönetmelik</button>
                 </div>
                 <div id="modalBiyografi" class="yonetim-sekme-panel is-aktif"></div>
-                <div id="modalYonetmelik" class="yonetim-sekme-panel">
-                    <div id="modalYonetmelikMetin"></div>
-                    <a href="#" id="modalPdfLink" class="yonetim-pdf-indir" target="_blank" hidden>
-                        <i class="bi bi-download"></i> <span id="modalPdfMetin"></span>
-                    </a>
-                </div>
+                <div id="modalYonetmelik" class="yonetim-sekme-panel"></div>
             </div>
         </div>
     </div>
@@ -213,12 +197,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalBaslik = document.getElementById('modalBaslik');
     const modalTelefon = document.getElementById('modalTelefon');
     const modalEmail = document.getElementById('modalEmail');
-    const modalAdres = document.getElementById('modalAdres');
     const modalSekmeler = document.getElementById('modalSekmeler');
     const modalBiyografi = document.getElementById('modalBiyografi');
     const modalYonetmelik = document.getElementById('modalYonetmelik');
-    const modalYonetmelikMetin = document.getElementById('modalYonetmelikMetin');
-    const modalPdfLink = document.getElementById('modalPdfLink');
 
     function metniParagraflaDoldur(el, metin, bosMesaj) {
         el.innerHTML = '';
@@ -277,24 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 modalEmail.hidden = true;
             }
 
-            if (btn.dataset.adres) {
-                modalAdres.querySelector('span').textContent = btn.dataset.adres;
-                modalAdres.hidden = false;
-            } else {
-                modalAdres.hidden = true;
-            }
-
             metniParagraflaDoldur(modalBiyografi, btn.dataset.biyografi, 'Biyografi bilgisi henüz eklenmemiştir.');
-            metniParagraflaDoldur(modalYonetmelikMetin, btn.dataset.yonetmelik, 'Yönetmelik bilgisi henüz eklenmemiştir.');
-
-            if (btn.dataset.pdf) {
-                modalPdfLink.href = btn.dataset.pdf;
-                document.getElementById('modalPdfMetin').textContent = btn.dataset.birim + ' Organizasyon Şeması';
-                modalPdfLink.hidden = false;
-            } else {
-                modalPdfLink.hidden = true;
-            }
-
+            metniParagraflaDoldur(modalYonetmelik, btn.dataset.yonetmelik, 'Yönetmelik bilgisi henüz eklenmemiştir.');
             sekmeSec('biyografi');
 
             modalBackdrop.hidden = false;

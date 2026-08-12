@@ -43,11 +43,17 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/enerji-politikamiz.php">Enerji Politikamız</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/belediye-meclisi.php">Belediye Meclisi</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/mudurlukler.php">Müdürlükler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/eski-baskanlar.php">Eski Başkanlar</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/baskan-yardimcilari.php">Başkan Yardımcıları</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/baskan-danismanlari.php">Başkan Danışmanı</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/arabuluculuk-komisyonu.php">Arabuluculuk Komisyonu</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/etik-komisyonu.php">Etik Komisyonu</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/meclis-kararlari.php">Meclis Kararları</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-kimlik.php">Kurumsal Kimlik</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-raporlar.php">Kurumsal Raporlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-dokumanlar.php">Kurumsal Dokumanlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/yayinlar.php">Yayınlar</a></li>
                 </ul>
             </li>
             <li class="has-dropdown">
