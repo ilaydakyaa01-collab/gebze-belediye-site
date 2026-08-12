@@ -69,11 +69,8 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/gebze/sanal-tur.php">360 Sanal Tur</a></li>
                 </ul>
             </li>
-            <li><a href="#">Hizmetler</a></li>
-            <li><a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a></li>
-            <li><a href="#">Gebze</a></li>  
             <li><a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a></li>
-            <li><a href="#">E-Belediye</a></li>
+            <li><a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a></li>
             <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>
             <li><a href="<?php echo $basePath; ?>index.php#iletisim">İletişim</a></li>
         </ul>
@@ -95,10 +92,8 @@ require_once __DIR__ . '/init.php';
     <a href="<?php echo $basePath; ?>pages/baskan/ozgecmis.php">Başkan</a>
     <a href="#">Kurumsal</a>
     <a href="#">Gebze</a>
-    <a href="#">Hizmetler</a>
-    <a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a>
     <a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a>
-    <a href="#">E-Belediye</a>
+    <a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a>
     <a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a>
     <a href="<?php echo $basePath; ?>index.php#iletisim">İletişim</a>
 </div>

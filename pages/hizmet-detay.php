@@ -72,6 +72,15 @@ function hzTiklayinizLinkify($guvenliMetin, $ctaLink)
  * $ctaLink verilirse, metin içindeki "tıklayınız" kelimesi o adrese
  * otomatik bağlanır (hizmet_listesi.link sütunu).
  */
+/**
+ * Ham "detay" metnini gruplandırılmış, okunabilir HTML'e çevirir:
+ *  - "*Başlık*" gibi yıldız içine alınmış tek satırlık paragraflar
+ *    gerçek bir alt başlığa (<h3>) dönüştürülür.
+ *  - Art arda gelen kısa satırlar (ör. ders/atölye isimleri) tek tek
+ *    paragraf yerine düzenli bir ızgara listesine (<ul class="hd-liste">)
+ *    dönüştürülür.
+ *  - Diğer her şey normal paragraf olarak kalır.
+ */
 function hzDetayHtml($ham, $ctaLink = null)
 {
     if (empty($ham)) return '';
@@ -79,15 +88,69 @@ function hzDetayHtml($ham, $ctaLink = null)
     $ham = preg_replace('/\n{2,}/', "\n\n", trim($ham));
     $paragraflar = preg_split('/\n\s*\n/', $ham);
 
-    $html = '';
+    // 1) Her paragrafı sınıflandır: baslik / liste / paragraf
+    $bloklar = [];
     foreach ($paragraflar as $p) {
         $p = trim($p);
         if ($p === '') continue;
-        $guvenli = nl2br(htmlspecialchars($p));
+
+        if (preg_match('/^\*(.+)\*$/u', $p, $m)) {
+            $bloklar[] = ['tip' => 'baslik', 'metin' => trim($m[1])];
+            continue;
+        }
+
+        $satirIciCokMu = strpos($p, "\n") !== false;
+        $noktalamaIleBitiyorMu = (bool)preg_match('/[.!?:]\s*$/u', $p);
+        $kisaMi = !$satirIciCokMu && !$noktalamaIleBitiyorMu && mb_strlen($p, 'UTF-8') <= 42;
+
+        $bloklar[] = ['tip' => $kisaMi ? 'liste' : 'paragraf', 'metin' => $p];
+    }
+
+    // 2) Ardışık "liste" bloklarını tek bir <ul>'da grupla, HTML üret
+    $html = '';
+    $i = 0;
+    $n = count($bloklar);
+    while ($i < $n) {
+        $blok = $bloklar[$i];
+
+        if ($blok['tip'] === 'baslik') {
+            $html .= '<h3 class="hd-altbaslik">' . htmlspecialchars($blok['metin']) . '</h3>' . "\n";
+            $i++;
+            continue;
+        }
+
+        if ($blok['tip'] === 'liste') {
+            $ogeler = [];
+            while ($i < $n && $bloklar[$i]['tip'] === 'liste') {
+                $ogeler[] = $bloklar[$i]['metin'];
+                $i++;
+            }
+            // En az 2 ardışık kısa satır varsa liste olarak grupla;
+            // tek başınaysa normal paragraf gibi göster.
+            if (count($ogeler) >= 2) {
+                $html .= '<ul class="hd-liste">' . "\n";
+                foreach ($ogeler as $og) {
+                    $guvenli = hzLinkify(htmlspecialchars($og));
+                    $html .= '<li>' . $guvenli . '</li>' . "\n";
+                }
+                $html .= '</ul>' . "\n";
+            } else {
+                $guvenli = nl2br(htmlspecialchars($ogeler[0]));
+                $guvenli = hzLinkify($guvenli);
+                $guvenli = hzTiklayinizLinkify($guvenli, $ctaLink);
+                $html .= '<p>' . $guvenli . '</p>' . "\n";
+            }
+            continue;
+        }
+
+        // normal paragraf
+        $guvenli = nl2br(htmlspecialchars($blok['metin']));
         $guvenli = hzLinkify($guvenli);
         $guvenli = hzTiklayinizLinkify($guvenli, $ctaLink);
         $html .= '<p>' . $guvenli . '</p>' . "\n";
+        $i++;
     }
+
     return $html;
 }
 
@@ -176,6 +239,43 @@ include '../includes/header.php';
     .hd-icerik .hd-link { color: var(--accent-hot); text-decoration: underline; word-break: break-word; }
     .hd-icerik .hd-link:hover { color: var(--navy); }
     .hd-icerik .hd-cta-link { font-weight: 700; text-transform: uppercase; }
+
+    .hd-icerik h3.hd-altbaslik {
+        font-size: 1.12rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 2rem 0 0.9rem;
+        padding-bottom: 5px;
+        border-bottom: 2px solid var(--accent-hot);
+        display: inline-block;
+    }
+    .hd-icerik h3.hd-altbaslik:first-child { margin-top: 0; }
+
+    .hd-icerik ul.hd-liste {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 10px 20px;
+        padding: 0;
+        margin: 0 0 1.5rem;
+    }
+    .hd-icerik ul.hd-liste li {
+        position: relative;
+        padding-left: 1.15rem;
+        font-size: 0.92rem;
+        color: var(--text);
+        line-height: 1.4;
+    }
+    .hd-icerik ul.hd-liste li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5em;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent-hot);
+    }
 
     .hd-geri {
         display: inline-flex;
