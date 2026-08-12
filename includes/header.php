@@ -15,7 +15,7 @@ require_once __DIR__ . '/init.php';
     <link rel="stylesheet" href="<?php echo $basePath; ?>css/style.css">
     <?php if (!empty($extraCss)): ?>
     <link rel="stylesheet" href="<?php echo $basePath . $extraCss; ?>">
-<?php endif; ?>
+    <?php endif; ?>
 </head>
 <body<?php echo !empty($bodyClass) ? ' class="' . htmlspecialchars($bodyClass) . '"' : ''; ?>>
 
@@ -50,7 +50,19 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/etik-komisyonu.php">Etik Komisyonu</a></li>
                 </ul>
             </li>
-            <li><a href="#">Gebze</a></li>  
+            <li class="has-dropdown">
+                <a href="#">Gebze</a>
+                <ul class="dropdown">
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/tarihce.php">Tarihçe</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/bugunku-gebze.php">Bugünkü Gebze</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/mahalle-muhtarlari.php">Mahalle Muhtarları</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/tarihi-yerler.php">Tarihi Yerler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/fotograf-galerisi.php">Fotoğraflarla Gebze</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/kardes-sehirler.php">Kardeş Şehirler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/birlikler.php">Üye Olduğumuz Birlikler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/gebze/sanal-tur.php">360 Sanal Tur</a></li>
+                </ul>
+            </li>
             <li><a href="#">Hizmetler</a></li>
             <li><a href="#">E-Belediye</a></li>
             <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>

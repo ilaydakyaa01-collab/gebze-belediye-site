@@ -1,4 +1,6 @@
 <?php
+include '../includes/db.php';
+
 $basePath = '../';
 $pageTitle = 'İlkelerimiz - Gebze Belediyesi';
 $navTransparent = false;
@@ -6,6 +8,10 @@ $bodyClass = 'page-inner';
 
 require_once '../includes/init.php';
 include '../includes/header.php';
+
+$stmt = $conn->query("SELECT icerik FROM sayfa_ilkelerimiz LIMIT 1");
+$sayfaVerisi = $stmt->fetch(PDO::FETCH_ASSOC);
+$sayfaIcerik = $sayfaVerisi ? $sayfaVerisi['icerik'] : '';
 ?>
 
 <link rel="stylesheet" href="<?php echo $basePath; ?>css/vizyon-misyon.css">
@@ -40,18 +46,7 @@ include '../includes/header.php';
                 </div>
 
                 <div class="kurumsal-metin-duz" id="kurumsalMetin">
-                    <ul class="ilke-listesi">
-                        <li>Belediye hizmetlerinde kalite, etkinlik ve verimlilik sağlamak görevimizdir.</li>
-                        <li>Belediye karar ve uygulamalarında şeffaflık ve hesap verebilirlik esastır.</li>
-                        <li>Belediye hizmetlerinde insan ve vatandaş odaklılık esastır.</li>
-                        <li>Gebze’yi katılımcı anlayışla yönetmek temel prensiptir.</li>
-                        <li>Belediye hizmetlerinin üretim ve sunumunda bilgi teknolojilerinden azami derecede yararlanmak esastır.</li>
-                        <li>Belediye karar ve uygulamalarında yasalara uymak zorunluluktur.</li>
-                        <li>Belediye hizmetlerinin ihtiyaçlara ve önceliklere göre adil dağıtımı esastır.</li>
-                        <li>Çalışanlarımızın memnuniyeti temel önceliklerimizdendir.</li>
-                        <li>Kurum kültürünün oluşturulması için çaba sarf ederiz.</li>
-                        <li>Sorunları oluşmadan önlemeye çalışırız.</li>
-                    </ul>
+                    <?php echo $sayfaIcerik; ?>
                 </div>
             </div>
 

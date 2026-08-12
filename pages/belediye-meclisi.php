@@ -46,7 +46,7 @@ $uyeSayfalari = array_chunk($meclisUyeleri, $sayfaBasi);
 
                 <?php if ($meclisBaskani): ?>
                     <div class="meclis-baskan-kart">
-                        <img src="<?php echo $basePath . htmlspecialchars($meclisBaskani['resim']); ?>" alt="<?php echo htmlspecialchars($meclisBaskani['ad']); ?>">
+                        <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=meclis_uyeleri&id=<?php echo (int) $meclisBaskani['id']; ?>" alt="<?php echo htmlspecialchars($meclisBaskani['ad']); ?>">
                         <div class="baskan-metin">
                             <h3><?php echo htmlspecialchars($meclisBaskani['ad']); ?></h3>
                             <span><?php echo htmlspecialchars($meclisBaskani['unvan']); ?></span>
@@ -75,7 +75,7 @@ $uyeSayfalari = array_chunk($meclisUyeleri, $sayfaBasi);
                 <div class="meclis-grid meclis-sayfa" data-sayfa="<?php echo $sayfaIndex + 1; ?>" <?php echo $sayfaIndex > 0 ? 'style="display:none;"' : ''; ?>>
                     <?php foreach ($sayfaUyeleri as $uye): ?>
                         <div class="meclis-kart" data-ad="<?php echo htmlspecialchars(mb_strtolower($uye['ad'], 'UTF-8')); ?>">
-                            <img src="<?php echo $basePath . htmlspecialchars($uye['resim']); ?>" alt="<?php echo htmlspecialchars($uye['ad']); ?>" loading="lazy">
+                            <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=meclis_uyeleri&id=<?php echo (int) $uye['id']; ?>" alt="<?php echo htmlspecialchars($uye['ad']); ?>" loading="lazy">
                             <h4><?php echo htmlspecialchars($uye['ad']); ?></h4>
                             <span><?php echo htmlspecialchars($uye['unvan']); ?></span>
                         </div>

@@ -1,4 +1,6 @@
 <?php
+include '../includes/db.php';
+
 $basePath = '../';
 $pageTitle = 'Misyonumuz - Gebze Belediyesi';
 $navTransparent = false;
@@ -6,6 +8,10 @@ $bodyClass = 'page-inner';
 
 require_once '../includes/init.php';
 include '../includes/header.php';
+
+$stmt = $conn->query("SELECT icerik FROM sayfa_misyonumuz LIMIT 1");
+$sayfaVerisi = $stmt->fetch(PDO::FETCH_ASSOC);
+$sayfaIcerik = $sayfaVerisi ? $sayfaVerisi['icerik'] : '';
 ?>
 
 <link rel="stylesheet" href="<?php echo $basePath; ?>css/vizyon-misyon.css">
@@ -40,7 +46,7 @@ include '../includes/header.php';
                 </div>
 
                 <div class="kurumsal-metin-duz" id="kurumsalMetin">
-                    <p>Gebze’de yaşam kalitesini arttırmak için yerel hizmetleri adil, etkin ve sürekli biçimde sunmaktır.</p>
+                    <?php echo $sayfaIcerik; ?>
                 </div>
             </div>
 

@@ -1,4 +1,6 @@
 <?php
+include '../includes/db.php';
+
 $basePath = '../';
 $pageTitle = 'Enerji Politikamız - Gebze Belediyesi';
 $navTransparent = false;
@@ -6,6 +8,10 @@ $bodyClass = 'page-inner';
 
 require_once '../includes/init.php';
 include '../includes/header.php';
+
+$stmt = $conn->query("SELECT icerik FROM sayfa_enerji_politikamiz LIMIT 1");
+$sayfaVerisi = $stmt->fetch(PDO::FETCH_ASSOC);
+$sayfaIcerik = $sayfaVerisi ? $sayfaVerisi['icerik'] : '';
 ?>
 
 <link rel="stylesheet" href="<?php echo $basePath; ?>css/vizyon-misyon.css">
@@ -40,18 +46,7 @@ include '../includes/header.php';
                 </div>
 
                 <div class="kurumsal-metin-duz" id="kurumsalMetin">
-                    <p>Belediye Kanunu ile tayin edilen hizmetlerimizi; ulusal kanun ve yönetmeliklere, bağlı bulunduğumuz mevzuat hükümlerine ve Enerji Yönetim Sistemi (EnYS) şartlarına bağlı kalarak, hizmetlerimizin sürdürülebilirliğini esas alarak yürütmekteyiz. Bu doğrultuda;</p>
-                    <ul class="ilke-listesi">
-                        <li>Enerji ve doğal kaynaklarımızı stratejik bir bakış açısıyla ele alarak verimli kullanmayı,</li>
-                        <li>Enerji Yönetim Sistemi’ni; ilgili standartlar, uygulanabilir yasal şartlar ve diğer gereklilikler doğrultusunda etkin şekilde yönetmeyi,</li>
-                        <li>Kaynaklarımızı etkin ve verimli bir şekilde kullanmayı,</li>
-                        <li>Enerji verimliliğini artırmak için gerekli olan süreç ve sistemleri oluşturarak, bu süreçleri gelişmiş teknolojilerle uygulamayı ve sürdürülebilirliği sağlamayı,</li>
-                        <li>İklim değişikliğiyle mücadeleye olumlu katkı sağlayacak enerji verimliliği projeleri geliştirerek uygulamayı,</li>
-                        <li>Tüm personelin EnYS süreçlerine katılımını sağlamayı, ekip çalışmasını güçlendirmeyi ve enerji verimliliği farkındalığını artırmayı,</li>
-                        <li>EnYS hedeflerini belirlemeyi, bu hedeflerin gerçekleşmesi için gerekli kaynakları sağlamayı ve sistemi sürekli gözden geçirerek iyileştirmeyi,</li>
-                        <li>Enerji performansını sürekli artırmak amacıyla, belirlenen amaç ve hedeflere ulaşmak için gerekli tüm bilgi ve kaynağı temin ederek; tedarik ve tasarım süreçlerinde enerji verimliliğini ön planda tutmayı,</li>
-                        <li>Vatandaşlarımız için faaliyetlerimiz çerçevesinde verimlilik artırıcı projeler tasarlamayı, enerji bakımından verimli ürün ve hizmetlerin tedarik edilmesi hususunda teşvik etmeyi, enerji verimliliği farkındalığını geliştirmek için bilgilendirmeyi ve desteklemeyi, enerji verimliliğimizi sürekli iyileştirmeyi taahhüt ederiz.</li>
-                    </ul>
+                    <?php echo $sayfaIcerik; ?>
                 </div>
             </div>
 

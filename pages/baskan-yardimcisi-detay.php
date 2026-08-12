@@ -50,7 +50,7 @@ $birimler = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                 </nav>
 
                 <div class="yrd-detay-ust">
-                    <img src="<?php echo $basePath . htmlspecialchars($kisi['resim']); ?>" alt="<?php echo htmlspecialchars($kisi['ad']); ?>">
+                    <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=baskan_yardimcilari&id=<?php echo (int) $kisi['id']; ?>" alt="<?php echo htmlspecialchars($kisi['ad']); ?>">
                     <div>
                         <h2><?php echo htmlspecialchars($kisi['ad']); ?></h2>
                         <span class="yrd-detay-unvan"><?php echo htmlspecialchars($kisi['unvan']); ?></span>

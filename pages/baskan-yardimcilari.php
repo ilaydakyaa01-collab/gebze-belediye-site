@@ -32,7 +32,7 @@ $yardimcilar = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="baskan-yrd-grid">
                     <?php foreach ($yardimcilar as $kisi): ?>
                         <a class="baskan-yrd-kart" href="baskan-yardimcisi-detay.php?id=<?php echo (int) $kisi['id']; ?>">
-                            <img src="<?php echo $basePath . htmlspecialchars($kisi['resim']); ?>" alt="<?php echo htmlspecialchars($kisi['ad']); ?>" loading="lazy">
+                            <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=baskan_yardimcilari&id=<?php echo (int) $kisi['id']; ?>" alt="<?php echo htmlspecialchars($kisi['ad']); ?>" loading="lazy">
                             <div class="baskan-yrd-overlay">
                                 <h4><?php echo htmlspecialchars($kisi['ad']); ?></h4>
                                 <span><?php echo htmlspecialchars($kisi['unvan']); ?></span>

@@ -41,7 +41,7 @@ include '../includes/header.php';
                 </header>
 
                 <div class="mudurluk-detay-ust">
-                    <img src="<?php echo $basePath . htmlspecialchars($mudurluk['resim']); ?>" alt="<?php echo htmlspecialchars($mudurluk['sorumlu_adi']); ?>">
+                    <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=mudurlukler&id=<?php echo (int) $mudurluk['id']; ?>" alt="<?php echo htmlspecialchars($mudurluk['sorumlu_adi']); ?>">
                     <div class="mudurluk-detay-bilgi">
                         <h3><?php echo htmlspecialchars($mudurluk['sorumlu_adi']); ?></h3>
                         <div class="mudurluk-detay-satir">

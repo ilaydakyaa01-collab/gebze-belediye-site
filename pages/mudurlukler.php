@@ -55,7 +55,7 @@ $mudurlukSayfalari = array_chunk($tumMudurlukler, $sayfaBasi);
                 <?php foreach ($mudurlukSayfalari as $sayfaIndex => $sayfaMudurlukleri): ?>
                     <?php foreach ($sayfaMudurlukleri as $m): ?>
                         <div class="mudurluk-kart mudurluk-sayfa" data-sayfa="<?php echo $sayfaIndex + 1; ?>" data-ara="<?php echo htmlspecialchars(mb_strtolower($m['ad'] . ' ' . $m['sorumlu_adi'] . ' ' . $m['eposta'], 'UTF-8')); ?>" data-href="mudurluk-detay.php?id=<?php echo (int) $m['id']; ?>" <?php echo $sayfaIndex > 0 ? 'style="display:none;"' : ''; ?>>
-                            <img src="<?php echo $basePath . htmlspecialchars($m['resim']); ?>" alt="<?php echo htmlspecialchars($m['sorumlu_adi']); ?>" loading="lazy">
+                            <img src="<?php echo $basePath; ?>includes/resim-goster.php?tablo=mudurlukler&id=<?php echo (int) $m['id']; ?>" alt="<?php echo htmlspecialchars($m['sorumlu_adi']); ?>" loading="lazy">
                             <div class="mudurluk-kart-icerik">
                                 <h4><?php echo htmlspecialchars($m['ad']); ?></h4>
                                 <span class="mudurluk-sorumlu"><?php echo htmlspecialchars($m['sorumlu_adi']); ?></span>
