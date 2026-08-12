@@ -105,16 +105,20 @@ button {
     position: absolute;
     top: calc(100% + 0.35rem);
     left: 0;
-    min-width: 200px;
+    width: max-content;
+    max-width: min(90vw, 320px);
     background: var(--white);
     border-radius: 10px;
-    padding: 0.4rem;
+    padding: 0.3rem;
     box-shadow: var(--shadow);
     opacity: 0;
     visibility: hidden;
     transform: translateY(6px);
     transition: 0.18s ease;
     z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
 }
 
 .has-dropdown:hover .dropdown {
@@ -125,10 +129,12 @@ button {
 
 .dropdown a {
     display: block;
-    padding: 0.55rem 0.8rem;
+    padding: 0.4rem 0.7rem;
     color: var(--navy);
-    font-size: 0.88rem;
-    border-radius: 8px;
+    font-size: 0.83rem;
+    line-height: 1.3;
+    border-radius: 6px;
+    white-space: nowrap;
 }
 
 .dropdown a:hover {

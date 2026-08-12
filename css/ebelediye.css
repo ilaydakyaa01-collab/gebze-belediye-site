@@ -1,0 +1,334 @@
+/* E-Belediye sayfası - bağımsız, kendi başına çalışan CSS dosyası */
+
+.ebelediye-bolumu {
+    padding-top: 6.5rem;
+    padding-bottom: 4rem;
+}
+
+.ebelediye-baslik {
+    margin-bottom: 1.6rem;
+}
+
+
+
+.ebelediye-alt-baslik {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 0.6rem;
+}
+
+/* Üst bar: arama solda, hamburger/kategori sağda */
+.ebelediye-ust-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+}
+
+.ebelediye-arama-wrap {
+    flex: 1;
+    max-width: 380px;
+    margin-bottom: 0;
+}
+
+.ebelediye-kategori-dropdown-wrap {
+    position: relative;
+    flex: none;
+}
+
+.ebelediye-hamburger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--navy);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+}
+
+.ebelediye-hamburger-btn:hover { background: var(--bg); }
+.ebelediye-hamburger-btn i { font-size: 1.1rem; }
+
+.ebelediye-kategori-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 240px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 14px 34px rgba(0, 26, 51, 0.18);
+    padding: 0.5rem;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.ebelediye-kategori-dropdown[hidden] {
+    display: none;
+}
+
+.ebelediye-kategori-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ebelediye-kategori-btn:hover { background: var(--bg); }
+
+.ebelediye-kategori-btn.active {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.ebelediye-aktif-kategori {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--bg);
+    color: var(--navy);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.2rem;
+}
+
+.ebelediye-aktif-kategori i {
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+/* Hizmet kartları ızgarası: 3 sütun x 4 satır = 12/sayfa */
+.ebelediye-hizmet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+}
+
+.ebelediye-kart {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem 1rem;
+    min-height: 130px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ebelediye-kart:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 26, 51, 0.14);
+    border-color: var(--navy);
+}
+
+.ebelediye-ikon {
+    font-size: 1.6rem;
+    color: var(--navy);
+}
+
+.ebelediye-kart-adi {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+}
+
+
+
+@media (max-width: 900px) {
+    .ebelediye-hizmet-grid { grid-template-columns: repeat(2, 1fr); }
+    .ebelediye-ust-bar { flex-direction: column; align-items: stretch; }
+    .ebelediye-arama-wrap { max-width: none; }
+}
+
+@media (max-width: 560px) {
+    .ebelediye-hizmet-grid { grid-template-columns: 1fr; }
+}
+
+/* Çok adımlı hizmet penceresi (modal) */
+.ebelediye-modal-arkaplan {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 12, 26, 0.75);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.ebelediye-modal-arkaplan[hidden] { display: none; }
+
+.ebelediye-modal {
+    width: min(480px, 92vw);
+    max-height: 80vh;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ebelediye-modal-ust {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.ebelediye-modal-ust span { flex: 1; }
+
+.ebelediye-modal-geri,
+.ebelediye-modal-kapat {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+    flex: none;
+}
+
+.ebelediye-modal-geri:hover,
+.ebelediye-modal-kapat:hover { background: rgba(255, 255, 255, 0.25); }
+
+.ebelediye-modal-govde {
+    padding: 0.6rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.ebelediye-modal-secenek {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text);
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.ebelediye-modal-secenek:hover {
+    background: var(--white);
+    border-color: var(--navy);
+}
+
+.ebelediye-modal-secenek i {
+    color: var(--navy);
+    font-size: 0.85rem;
+    flex: none;
+}
+
+/* Meclis Üyeleri sayfasından ödünç alınan arama/sayfalama stilleri
+   (ebelediye.css bağımsız bir dosya olduğu için burada da tanımlanması gerekiyor) */
+.meclis-arama-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.6rem;
+}
+
+.meclis-arama {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.15rem 0.75rem 2.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-family: var(--font);
+    color: var(--text);
+    box-sizing: border-box;
+}
+
+.meclis-arama:focus {
+    outline: none;
+    border-color: var(--navy);
+}
+
+.meclis-arama-ikon {
+    position: absolute;
+    left: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--muted);
+    font-size: 1.05rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.meclis-arama-ikon:hover {
+    background: var(--bg);
+    color: var(--navy);
+}
+
+.meclis-sayfalama {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+}
+
+.meclis-sayfa-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.meclis-sayfa-btn:hover {
+    background: var(--bg);
+}
+
+.meclis-sayfa-btn.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+}
