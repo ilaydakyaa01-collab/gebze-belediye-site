@@ -72,7 +72,7 @@ require_once __DIR__ . '/init.php';
             <li><a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a></li>
             <li><a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a></li>
             <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>
-            <li><a href="<?php echo $basePath; ?>index.php#iletisim">İletişim</a></li>
+            <li><a href="<?php echo $basePath; ?>pages/iletisim/iletisim.php">İletişim</a></li>
         </ul>
 
         <button class="nav-toggle" id="navToggle" aria-label="Menüyü aç" aria-expanded="false">
@@ -95,6 +95,6 @@ require_once __DIR__ . '/init.php';
     <a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a>
     <a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a>
     <a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a>
-    <a href="<?php echo $basePath; ?>index.php#iletisim">İletişim</a>
+    <a href="<?php echo $basePath; ?>pages/iletisim/iletisim.php">İletişim</a>
 </div>
 <div class="mobile-backdrop" id="mobileBackdrop" hidden></div>
