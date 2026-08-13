@@ -1111,3 +1111,43 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* --- KVKK Aydınlatma Metni sayfasına özel --- */
+.kvkk-liste {
+    margin: 0 0 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.kvkk-liste li {
+    font-size: calc(1.05rem * var(--metin-olcek, 1));
+    line-height: 1.8;
+    color: var(--text);
+}
+
+.kvkk-tablo-wrap {
+    overflow-x: auto;
+    margin-bottom: 1.4rem;
+}
+
+.kvkk-tablo {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: calc(0.92rem * var(--metin-olcek, 1));
+}
+
+.kvkk-tablo th,
+.kvkk-tablo td {
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    border: 1px solid var(--line);
+    vertical-align: top;
+}
+
+.kvkk-tablo th {
+    background: var(--bg);
+    color: var(--navy);
+    font-weight: 700;
+    white-space: nowrap;
+}

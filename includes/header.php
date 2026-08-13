@@ -54,6 +54,7 @@ require_once __DIR__ . '/init.php';
                     <li><a href="<?php echo $basePath; ?>pages/kurumsal-raporlar.php">Kurumsal Raporlar</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/kurumsal-dokumanlar.php">Kurumsal Dokumanlar</a></li>
                     <li><a href="<?php echo $basePath; ?>pages/yayinlar.php">Yayınlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kvkk.php">KVKK Aydınlatma Metni</a></li>
                 </ul>
             </li>
             <li class="has-dropdown">
