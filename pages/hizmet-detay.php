@@ -18,6 +18,7 @@ $id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 $hizmet = null;
 $kardesler = [];
+$dokumanlar = [];
 try {
     $stmt = $conn->prepare("SELECT * FROM hizmet_listesi WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $id]);
@@ -27,6 +28,16 @@ try {
         $stmtK = $conn->prepare("SELECT id, hizmet_adi FROM hizmet_listesi WHERE mudurluk = :mudurluk ORDER BY sira ASC, hizmet_adi ASC");
         $stmtK->execute([':mudurluk' => $hizmet['mudurluk']]);
         $kardesler = $stmtK->fetchAll(PDO::FETCH_ASSOC);
+
+        // hizmet_dokumanlari tablosu henüz oluşturulmamışsa sayfa
+        // yine de çalışmaya devam etsin diye ayrı try/catch içinde.
+        try {
+            $stmtD = $conn->prepare("SELECT * FROM hizmet_dokumanlari WHERE hizmet_id = :hizmet_id ORDER BY sira ASC, id ASC");
+            $stmtD->execute([':hizmet_id' => $hizmet['id']]);
+            $dokumanlar = $stmtD->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $dokumanlar = [];
+        }
     }
 } catch (Exception $e) {
     $hizmet = null;
@@ -81,17 +92,65 @@ function hzTiklayinizLinkify($guvenliMetin, $ctaLink)
  *    dönüştürülür.
  *  - Diğer her şey normal paragraf olarak kalır.
  */
+/**
+ * Bir metin "Etiket: açıklama" kalıbına uyuyorsa [etiket, açıklama]
+ * döner, uymuyorsa [null, orijinal metin] döner.
+ * "Etiket" kısmı cümle noktalaması içermemeli (yani gerçek bir cümle
+ * değil, kısa bir başlık/terim olmalı).
+ */
+function hzEtiketAyikla($metin)
+{
+    if (preg_match('/^([^:\n]{2,55}):\s*(.+)$/us', $metin, $m) && !preg_match('/[.!?]/u', $m[1])) {
+        return [trim($m[1]), trim($m[2])];
+    }
+    return [null, $metin];
+}
+
+/**
+ * "Etiket: açıklama" metnini güvenli, kalın etiketli HTML'e çevirir.
+ */
+function hzSatirHtml($metin)
+{
+    [$etiket, $kalan] = hzEtiketAyikla($metin);
+    if ($etiket !== null) {
+        return '<strong>' . htmlspecialchars($etiket) . ':</strong> ' . hzLinkify(htmlspecialchars($kalan));
+    }
+    return hzLinkify(htmlspecialchars($metin));
+}
+
 function hzDetayHtml($ham, $ctaLink = null)
 {
     if (empty($ham)) return '';
     $ham = str_replace(["\r\n", "\r"], "\n", $ham);
     $ham = preg_replace('/\n{2,}/', "\n\n", trim($ham));
-    $paragraflar = preg_split('/\n\s*\n/', $ham);
+    $paragraflar = array_map('trim', preg_split('/\n\s*\n/', $ham));
 
-    // 1) Her paragrafı sınıflandır: baslik / liste / paragraf
+    // 0) Ön geçiş: "Etiket" satırının hemen ardından tek başına
+    //    "(açıklama)" satırı geliyorsa, ikisini "Etiket: açıklama"
+    //    şeklinde tek paragrafta birleştir. Böylece örn.
+    //    "Manevi Danışmanlık" + "(Değerler Eğitimi)" satırları
+    //    "Manevi Danışmanlık: Değerler Eğitimi" olur.
+    $birlesmis = [];
+    $i = 0;
+    $n = count($paragraflar);
+    while ($i < $n) {
+        $mevcut = $paragraflar[$i];
+        if ($mevcut === '') { $i++; continue; }
+        $sonraki = ($i + 1 < $n) ? $paragraflar[$i + 1] : '';
+        $baslikMi = (bool)preg_match('/^\*(.+)\*$/u', $mevcut);
+        if (!$baslikMi && $sonraki !== '' && preg_match('/^\((.+)\)$/u', $sonraki, $m2)) {
+            $birlesmis[] = rtrim($mevcut, ': ') . ': ' . trim($m2[1]);
+            $i += 2;
+        } else {
+            $birlesmis[] = $mevcut;
+            $i++;
+        }
+    }
+    $paragraflar = $birlesmis;
+
+    // 1) Her paragrafı sınıflandır: baslik / tablo / liste / paragraf
     $bloklar = [];
     foreach ($paragraflar as $p) {
-        $p = trim($p);
         if ($p === '') continue;
 
         if (preg_match('/^\*(.+)\*$/u', $p, $m)) {
@@ -99,9 +158,19 @@ function hzDetayHtml($ham, $ctaLink = null)
             continue;
         }
 
+        // Her satırı '|' ile başlayan bir blok = tablo
+        $tabloSatirlari = explode("\n", $p);
+        $hepsiPipeIleBasliyorMu = count($tabloSatirlari) >= 1 && !in_array(false, array_map(function ($s) {
+            return strpos(trim($s), '|') === 0;
+        }, $tabloSatirlari));
+        if ($hepsiPipeIleBasliyorMu) {
+            $bloklar[] = ['tip' => 'tablo', 'metin' => $p];
+            continue;
+        }
+
         $satirIciCokMu = strpos($p, "\n") !== false;
         $noktalamaIleBitiyorMu = (bool)preg_match('/[.!?:]\s*$/u', $p);
-        $kisaMi = !$satirIciCokMu && !$noktalamaIleBitiyorMu && mb_strlen($p, 'UTF-8') <= 42;
+        $kisaMi = !$satirIciCokMu && !$noktalamaIleBitiyorMu && mb_strlen($p, 'UTF-8') <= 55;
 
         $bloklar[] = ['tip' => $kisaMi ? 'liste' : 'paragraf', 'metin' => $p];
     }
@@ -119,6 +188,27 @@ function hzDetayHtml($ham, $ctaLink = null)
             continue;
         }
 
+        if ($blok['tip'] === 'tablo') {
+            $satirlar = explode("\n", $blok['metin']);
+            $html .= '<div class="hd-tablo-sarici"><table class="hd-tablo">' . "\n";
+            foreach ($satirlar as $siraNo => $satir) {
+                $hucreler = explode('|', trim($satir));
+                // Baştaki/sondaki boş hücreleri at (satır '|a|b|' şeklinde başlayıp bitiyorsa)
+                if (count($hucreler) > 0 && trim($hucreler[0]) === '') array_shift($hucreler);
+                if (count($hucreler) > 0 && trim(end($hucreler)) === '') array_pop($hucreler);
+
+                $etiketAdi = $siraNo === 0 ? 'th' : 'td';
+                $html .= '<tr>';
+                foreach ($hucreler as $hucre) {
+                    $html .= '<' . $etiketAdi . '>' . htmlspecialchars(trim($hucre)) . '</' . $etiketAdi . '>';
+                }
+                $html .= '</tr>' . "\n";
+            }
+            $html .= '</table></div>' . "\n";
+            $i++;
+            continue;
+        }
+
         if ($blok['tip'] === 'liste') {
             $ogeler = [];
             while ($i < $n && $bloklar[$i]['tip'] === 'liste') {
@@ -130,13 +220,17 @@ function hzDetayHtml($ham, $ctaLink = null)
             if (count($ogeler) >= 2) {
                 $html .= '<ul class="hd-liste">' . "\n";
                 foreach ($ogeler as $og) {
-                    $guvenli = hzLinkify(htmlspecialchars($og));
-                    $html .= '<li>' . $guvenli . '</li>' . "\n";
+                    $html .= '<li>' . hzSatirHtml($og) . '</li>' . "\n";
                 }
                 $html .= '</ul>' . "\n";
             } else {
-                $guvenli = nl2br(htmlspecialchars($ogeler[0]));
-                $guvenli = hzLinkify($guvenli);
+                [$etiket, $kalan] = hzEtiketAyikla($ogeler[0]);
+                if ($etiket !== null) {
+                    $guvenli = '<strong>' . htmlspecialchars($etiket) . ':</strong> ' . nl2br(hzLinkify(htmlspecialchars($kalan)));
+                } else {
+                    $guvenli = nl2br(htmlspecialchars($ogeler[0]));
+                    $guvenli = hzLinkify($guvenli);
+                }
                 $guvenli = hzTiklayinizLinkify($guvenli, $ctaLink);
                 $html .= '<p>' . $guvenli . '</p>' . "\n";
             }
@@ -144,14 +238,42 @@ function hzDetayHtml($ham, $ctaLink = null)
         }
 
         // normal paragraf
-        $guvenli = nl2br(htmlspecialchars($blok['metin']));
-        $guvenli = hzLinkify($guvenli);
+        [$etiket, $kalan] = hzEtiketAyikla($blok['metin']);
+        if ($etiket !== null) {
+            $guvenli = '<strong>' . htmlspecialchars($etiket) . ':</strong> ' . nl2br(hzLinkify(htmlspecialchars($kalan)));
+        } else {
+            $guvenli = nl2br(htmlspecialchars($blok['metin']));
+            $guvenli = hzLinkify($guvenli);
+        }
         $guvenli = hzTiklayinizLinkify($guvenli, $ctaLink);
         $html .= '<p>' . $guvenli . '</p>' . "\n";
         $i++;
     }
 
     return $html;
+}
+
+/**
+
+ * Dosya uzantısına göre uygun Bootstrap Icons sınıfını döner.
+ */
+function hzDosyaIkonu($dosyaYolu)
+{
+    $uzanti = strtolower(pathinfo($dosyaYolu, PATHINFO_EXTENSION));
+    $eslesme = [
+        'pdf'  => 'bi-filetype-pdf',
+        'doc'  => 'bi-filetype-doc',
+        'docx' => 'bi-filetype-docx',
+        'xls'  => 'bi-filetype-xls',
+        'xlsx' => 'bi-filetype-xlsx',
+        'ppt'  => 'bi-filetype-ppt',
+        'pptx' => 'bi-filetype-pptx',
+        'zip'  => 'bi-file-earmark-zip',
+        'jpg'  => 'bi-filetype-jpg',
+        'jpeg' => 'bi-filetype-jpg',
+        'png'  => 'bi-filetype-png',
+    ];
+    return $eslesme[$uzanti] ?? 'bi-file-earmark';
 }
 
 include '../includes/header.php';
@@ -235,6 +357,14 @@ include '../includes/header.php';
 
     .hd-icerik { font-size: 0.98rem; color: var(--text); line-height: 1.75; transition: font-size .15s ease; }
     .hd-icerik p { margin: 0 0 1.1rem; }
+    .hd-icerik strong { color: var(--navy); }
+
+    .hd-tablo-sarici { overflow-x: auto; margin: 0 0 1.5rem; border: 1px solid var(--line); border-radius: 10px; }
+    .hd-tablo { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .hd-tablo th, .hd-tablo td { padding: 0.65rem 0.9rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .hd-tablo th { background: var(--navy); color: var(--white); font-weight: 600; }
+    .hd-tablo tr:last-child td { border-bottom: none; }
+    .hd-tablo tr:nth-child(even) td { background: #f7f9fb; }
     .hd-icerik p:last-child { margin-bottom: 0; }
     .hd-icerik .hd-link { color: var(--accent-hot); text-decoration: underline; word-break: break-word; }
     .hd-icerik .hd-link:hover { color: var(--navy); }
@@ -276,6 +406,35 @@ include '../includes/header.php';
         border-radius: 50%;
         background: var(--accent-hot);
     }
+
+    .hd-dokumanlar { margin-top: 2.2rem; }
+    .hd-dokumanlar-baslik {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0 0 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid var(--line);
+    }
+    .hd-dokumanlar-liste { display: flex; flex-direction: column; gap: 10px; }
+    .hd-dokuman-kart {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 0.9rem 1.1rem;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        text-decoration: none;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .hd-dokuman-kart:hover { border-color: var(--navy); box-shadow: var(--shadow); }
+    .hd-dokuman-ikon { font-size: 1.6rem; color: var(--navy); flex-shrink: 0; width: 32px; text-align: center; }
+    .hd-dokuman-metin { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+    .hd-dokuman-ad { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .hd-dokuman-boyut { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+    .hd-dokuman-indir { font-size: 1.1rem; color: var(--muted); flex-shrink: 0; }
+    .hd-dokuman-kart:hover .hd-dokuman-indir { color: var(--accent-hot); }
 
     .hd-geri {
         display: inline-flex;
@@ -425,6 +584,26 @@ include '../includes/header.php';
                         }
                         ?>
                     </div>
+
+                    <?php if (count($dokumanlar) > 0): ?>
+                        <div class="hd-dokumanlar">
+                            <h2 class="hd-dokumanlar-baslik">İndirilebilir Dökümanlar</h2>
+                            <div class="hd-dokumanlar-liste">
+                                <?php foreach ($dokumanlar as $dok): ?>
+                                    <a class="hd-dokuman-kart" href="<?php echo $basePath . htmlspecialchars(ltrim($dok['dosya_yolu'], '/')); ?>" download>
+                                        <div class="hd-dokuman-ikon"><i class="bi <?php echo hzDosyaIkonu($dok['dosya_yolu']); ?>"></i></div>
+                                        <div class="hd-dokuman-metin">
+                                            <span class="hd-dokuman-ad"><?php echo htmlspecialchars($dok['dosya_adi']); ?></span>
+                                            <?php if (!empty($dok['dosya_boyutu'])): ?>
+                                                <span class="hd-dokuman-boyut"><?php echo strtoupper(pathinfo($dok['dosya_yolu'], PATHINFO_EXTENSION)); ?>, <?php echo htmlspecialchars($dok['dosya_boyutu']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <i class="bi bi-download hd-dokuman-indir"></i>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
                     <a href="<?php echo $basePath; ?>pages/hizmetler.php" class="hd-geri">
                         <i class="bi bi-arrow-left"></i> Tüm Hizmetlere Dön
