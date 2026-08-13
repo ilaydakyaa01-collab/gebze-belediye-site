@@ -71,7 +71,7 @@ require_once __DIR__ . '/init.php';
             </li>
             <li><a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a></li>
             <li><a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a></li>
-            <li><a href="#">Etkinlikler</a></li>
+            <li><a href="<?php echo $basePath; ?>pages/etkinlikler.php">Etkinlikler</a></li>
             <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>
             <li><a href="<?php echo $basePath; ?>pages/iletisim/iletisim.php">İletişim</a></li>
         </ul>
@@ -95,7 +95,7 @@ require_once __DIR__ . '/init.php';
     <a href="#">Gebze</a>
     <a href="<?php echo $basePath; ?>pages/hizmetler.php">Hizmetler</a>
     <a href="<?php echo $basePath; ?>pages/ebelediye/ebelediye.php">E-Belediye</a>
-    <a href="#">Etkinlikler</a>
+    <a href="<?php echo $basePath; ?>pages/etkinlikler.php">Etkinlikler</a>
     <a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a>
     <a href="<?php echo $basePath; ?>pages/iletisim/iletisim.php">İletişim</a>
 </div>
