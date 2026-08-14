@@ -43,6 +43,12 @@ function birimButonu($basePath, $birim) {
 }
 ?>
 
+<style>
+    /* Sayfa ile footer arasına ekstra boşluk (harici css dosyasına
+       dokunmadan, sadece bu sayfaya özel güvenli bir düzeltme) */
+    .page-content { padding-bottom: 4rem; }
+</style>
+
 <section class="page-content">
     <div class="container">
         <header class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
