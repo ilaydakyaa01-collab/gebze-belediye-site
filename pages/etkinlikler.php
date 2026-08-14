@@ -45,6 +45,18 @@ include '../includes/header.php';
 <style>
     .etk-bolumu { padding: 7rem 0 5rem; }
 
+    .etk-breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 0.8rem;
+    }
+    .etk-breadcrumb a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .etk-breadcrumb a:hover { color: var(--accent-hot); }
+
     .etk-ustbaslik { margin-bottom: 1.6rem; }
     .etk-ustbaslik h1 {
         font-size: clamp(1.9rem, 3.4vw, 2.5rem);
@@ -116,15 +128,15 @@ include '../includes/header.php';
 
     .etkinlik-gorsel {
         position: relative;
-        height: 180px;
+        aspect-ratio: 1.86 / 1;
         background: #eef1f4;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--muted);
         font-size: 0.78rem;
         letter-spacing: .04em;
-        overflow: hidden;
     }
     .etkinlik-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -154,11 +166,54 @@ include '../includes/header.php';
 
     .etkinlik-bilgi { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
     .etkinlik-bilgi time { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .etkinlik-bilgi p.etkinlik-tarih-satiri {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+    }
+    .etkinlik-bilgi p.etkinlik-tarih-satiri span { display: flex; align-items: center; gap: 6px; }
     .etkinlik-bilgi h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin: 0; line-height: 1.35; }
     .etkinlik-bilgi p { font-size: 0.85rem; color: var(--muted); margin: 0; display: flex; align-items: center; gap: 6px; }
+    .etkinlik-detaylar-btn {
+        align-self: flex-start;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--navy);
+        color: var(--white);
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .etkinlik-detaylar-btn:hover { background: #004a8f; }
 
     .etk-bos { text-align: center; color: var(--muted); padding: 3rem 0; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
     #etkSonucYok { display: none; text-align: center; color: var(--muted); padding: 3rem 0; }
+
+    .etk-sayfalama {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 2rem;
+    }
+    .etk-sayfalama button {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--white);
+        color: var(--navy);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+    .etk-sayfalama button:hover:not(:disabled) { border-color: var(--accent-hot); color: var(--accent-hot); }
+    .etk-sayfalama button.is-active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+    .etk-sayfalama button:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .etk-sidebar { position: sticky; top: 100px; }
     .etk-kutu {
@@ -218,27 +273,33 @@ include '../includes/header.php';
 <main class="etkinlik-bolumu etk-bolumu page-content">
     <div class="container">
 
+        <nav class="etk-breadcrumb">
+            <a href="<?php echo $basePath; ?>index.php"><i class="bi bi-house"></i> Anasayfa</a>
+            <span>/</span>
+            <span>Etkinlikler</span>
+        </nav>
+
         <div class="etk-ustbaslik">
             <h1>Etkinlikler</h1>
             <p>Şehrimizdeki güncel etkinlikleri keşfedin.</p>
-        </div>
-
-        <div class="etk-arama">
-            <input type="text" id="etkArama" placeholder="Etkinlik, kategori veya yer ara...">
-            <button type="button"><i class="bi bi-search"></i></button>
-        </div>
-
-        <div class="etk-tarih-cipler" id="etkTarihCipler">
-            <button type="button" class="etk-cip is-active" data-tarih-filtre="tumu">Tümü</button>
-            <button type="button" class="etk-cip" data-tarih-filtre="bugun">Bugün</button>
-            <button type="button" class="etk-cip" data-tarih-filtre="hafta">Bu Hafta</button>
-            <button type="button" class="etk-cip" data-tarih-filtre="ay">Bu Ay</button>
         </div>
 
         <?php if (count($etkinlikler) > 0): ?>
 
             <div class="etk-layout">
                 <div>
+                    <div class="etk-arama">
+                        <input type="text" id="etkArama" placeholder="Etkinlik, kategori veya yer ara...">
+                        <button type="button"><i class="bi bi-search"></i></button>
+                    </div>
+
+                    <div class="etk-tarih-cipler" id="etkTarihCipler">
+                        <button type="button" class="etk-cip is-active" data-tarih-filtre="tumu">Tümü</button>
+                        <button type="button" class="etk-cip" data-tarih-filtre="bugun">Bugün</button>
+                        <button type="button" class="etk-cip" data-tarih-filtre="hafta">Bu Hafta</button>
+                        <button type="button" class="etk-cip" data-tarih-filtre="ay">Bu Ay</button>
+                    </div>
+
                     <div class="etkinlik-grid" id="etkGrid">
                         <?php foreach ($etkinlikler as $etkinlik):
                             $katSlug = etkSlug($etkinlik['kategori'] ?? '');
@@ -264,22 +325,26 @@ include '../includes/header.php';
                                     <?php endif; ?>
                                 </div>
                                 <div class="etkinlik-bilgi">
-                                    <time datetime="<?php echo htmlspecialchars($etkinlik['tarih']); ?>">
-                                        <i class="bi bi-calendar-event"></i>
-                                        <?php echo date('d.m.Y', strtotime($etkinlik['tarih'])); ?>
-                                    </time>
                                     <h3><?php echo htmlspecialchars($etkinlik['baslik']); ?></h3>
-                                    <?php if (!empty($etkinlik['saat'])): ?>
-                                        <p><i class="bi bi-clock"></i> <?php echo htmlspecialchars($etkinlik['saat']); ?></p>
-                                    <?php endif; ?>
                                     <?php if (!empty($etkinlik['yer'])): ?>
                                         <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($etkinlik['yer']); ?></p>
                                     <?php endif; ?>
+                                    <p class="etkinlik-tarih-satiri">
+                                        <time datetime="<?php echo htmlspecialchars($etkinlik['tarih']); ?>">
+                                            <i class="bi bi-calendar-event"></i>
+                                            <?php echo date('d.m.Y', strtotime($etkinlik['tarih'])); ?>
+                                        </time>
+                                        <?php if (!empty($etkinlik['saat'])): ?>
+                                            <span><i class="bi bi-clock"></i> <?php echo htmlspecialchars($etkinlik['saat']); ?></span>
+                                        <?php endif; ?>
+                                    </p>
+                                    <a class="etkinlik-detaylar-btn" href="<?php echo $basePath; ?>pages/etkinlik-detay.php?id=<?php echo (int)$etkinlik['id']; ?>">Detaylar</a>
                                 </div>
                             </article>
                         <?php endforeach; ?>
                     </div>
                     <p id="etkSonucYok">Aramanızla eşleşen bir etkinlik bulunamadı.</p>
+                    <nav class="etk-sayfalama" id="etkSayfalama"></nav>
                 </div>
 
                 <aside class="etk-sidebar">
@@ -310,14 +375,17 @@ include '../includes/header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const kartlar = document.querySelectorAll('.etk-kart-oge');
+    const kartlar = Array.from(document.querySelectorAll('.etk-kart-oge'));
     const tarihCipler = document.querySelectorAll('#etkTarihCipler .etk-cip');
     const kategoriBtn = document.querySelectorAll('#etkKategoriListe button');
     const aramaInput = document.getElementById('etkArama');
     const sonucYok = document.getElementById('etkSonucYok');
+    const sayfalamaKutusu = document.getElementById('etkSayfalama');
 
+    const SAYFA_BASINA = 6;
     let aktifTarihFiltre = 'tumu';
     let aktifKategori = 'tumu-kategori';
+    let aktifSayfa = 1;
 
     function bugununTarihi() {
         const d = new Date();
@@ -348,21 +416,70 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    function kartlariUygula() {
+    function eslesenleriBul() {
         const q = aramaInput.value.trim().toLocaleLowerCase('tr');
-        let gorunenSayisi = 0;
-
-        kartlar.forEach(function (kart) {
+        return kartlar.filter(function (kart) {
             const aramaUygun = q === '' || kart.dataset.arama.includes(q);
             const kategoriUygun = aktifKategori === 'tumu-kategori' || kart.dataset.kategori === aktifKategori;
             const tarihUygun = tarihUygunMu(kart.dataset.tarih);
-            const uygun = aramaUygun && kategoriUygun && tarihUygun;
-
-            kart.style.display = uygun ? '' : 'none';
-            if (uygun) gorunenSayisi++;
+            return aramaUygun && kategoriUygun && tarihUygun;
         });
+    }
 
-        sonucYok.style.display = gorunenSayisi === 0 ? 'block' : 'none';
+    function sayfalamaCiz(toplamSayfa) {
+        sayfalamaKutusu.innerHTML = '';
+        if (toplamSayfa <= 1) return;
+
+        // Aynı anda en fazla 3 sayfa numarası göster, aktif sayfayı ortala
+        const GORUNEN_SAYFA_SAYISI = 3;
+        let pencereBaslangic = Math.max(1, aktifSayfa - 1);
+        let pencereBitis = pencereBaslangic + GORUNEN_SAYFA_SAYISI - 1;
+        if (pencereBitis > toplamSayfa) {
+            pencereBitis = toplamSayfa;
+            pencereBaslangic = Math.max(1, pencereBitis - GORUNEN_SAYFA_SAYISI + 1);
+        }
+
+        const oncekiBtn = document.createElement('button');
+        oncekiBtn.type = 'button';
+        oncekiBtn.textContent = 'Önceki';
+        oncekiBtn.disabled = aktifSayfa <= 1;
+        oncekiBtn.addEventListener('click', function () { aktifSayfa--; kartlariUygula(); });
+        sayfalamaKutusu.appendChild(oncekiBtn);
+
+        for (let s = pencereBaslangic; s <= pencereBitis; s++) {
+            const sayfaBtn = document.createElement('button');
+            sayfaBtn.type = 'button';
+            sayfaBtn.textContent = s;
+            if (s === aktifSayfa) sayfaBtn.classList.add('is-active');
+            sayfaBtn.addEventListener('click', function () { aktifSayfa = s; kartlariUygula(); });
+            sayfalamaKutusu.appendChild(sayfaBtn);
+        }
+
+        const sonrakiBtn = document.createElement('button');
+        sonrakiBtn.type = 'button';
+        sonrakiBtn.textContent = 'Sonraki';
+        sonrakiBtn.disabled = aktifSayfa >= toplamSayfa;
+        sonrakiBtn.addEventListener('click', function () { aktifSayfa++; kartlariUygula(); });
+        sayfalamaKutusu.appendChild(sonrakiBtn);
+    }
+
+    function kartlariUygula(filtreDegisti) {
+        if (filtreDegisti) aktifSayfa = 1;
+
+        const eslesenler = eslesenleriBul();
+        const toplamSayfa = Math.max(1, Math.ceil(eslesenler.length / SAYFA_BASINA));
+        if (aktifSayfa > toplamSayfa) aktifSayfa = toplamSayfa;
+
+        const baslangic = (aktifSayfa - 1) * SAYFA_BASINA;
+        const bitis = baslangic + SAYFA_BASINA;
+
+        kartlar.forEach(function (kart) { kart.style.display = 'none'; });
+        eslesenler.slice(baslangic, bitis).forEach(function (kart) { kart.style.display = ''; });
+
+        sonucYok.style.display = eslesenler.length === 0 ? 'block' : 'none';
+        sayfalamaCiz(toplamSayfa);
+
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     tarihCipler.forEach(function (btn) {
@@ -370,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tarihCipler.forEach(function (b) { b.classList.remove('is-active'); });
             btn.classList.add('is-active');
             aktifTarihFiltre = btn.dataset.tarihFiltre;
-            kartlariUygula();
+            kartlariUygula(true);
         });
     });
 
@@ -379,13 +496,15 @@ document.addEventListener('DOMContentLoaded', function () {
             kategoriBtn.forEach(function (b) { b.classList.remove('is-active'); });
             btn.classList.add('is-active');
             aktifKategori = btn.dataset.kategori;
-            kartlariUygula();
+            kartlariUygula(true);
         });
     });
 
     if (aramaInput) {
-        aramaInput.addEventListener('input', kartlariUygula);
+        aramaInput.addEventListener('input', function () { kartlariUygula(true); });
     }
+
+    kartlariUygula(true);
 });
 </script>
 
