@@ -19,6 +19,7 @@ $id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 $etkinlik = null;
 $digerEtkinlikler = [];
+$kardesler = [];
 try {
     $stmt = $conn->prepare("SELECT * FROM etkinlikler WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $id]);
@@ -28,6 +29,12 @@ try {
         $stmtD = $conn->prepare("SELECT * FROM etkinlikler WHERE id != :id ORDER BY tarih ASC, sira ASC, id ASC");
         $stmtD->execute([':id' => $etkinlik['id']]);
         $digerEtkinlikler = $stmtD->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($etkinlik['kategori'])) {
+            $stmtK = $conn->prepare("SELECT id, baslik, tarih FROM etkinlikler WHERE kategori = :kategori AND id != :id ORDER BY tarih ASC, sira ASC, id ASC");
+            $stmtK->execute([':kategori' => $etkinlik['kategori'], ':id' => $etkinlik['id']]);
+            $kardesler = $stmtK->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 } catch (Exception $e) {
     $etkinlik = null;
@@ -232,14 +239,14 @@ include '../includes/header.php';
         font-size: 0.85rem; margin-bottom: 1.6rem;
     }
 
-    .ed-bilgi-satiri { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .ed-bilgi-satiri { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; max-width: 900px; }
     .ed-bilgi-kutu { background: #f7f9fb; border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.85rem; }
     .ed-bilgi-satir { display: flex; align-items: flex-start; gap: 10px; }
     .ed-bilgi-ikon { width: 34px; height: 34px; border-radius: 8px; background: #eef4fb; color: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
     .ed-bilgi-etiket { font-size: 0.76rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
     .ed-bilgi-deger { font-size: 0.94rem; color: var(--navy); font-weight: 600; }
 
-    .ed-icerik { font-size: 0.98rem; color: var(--text); line-height: 1.75; margin-bottom: 2rem; }
+    .ed-icerik { font-size: 0.98rem; color: var(--text); line-height: 1.75; margin-bottom: 2rem; max-width: 900px; }
     .ed-icerik p { margin: 0 0 1.1rem; }
     .ed-icerik p:last-child { margin-bottom: 0; }
     .ed-icerik strong { color: var(--navy); }
@@ -270,6 +277,53 @@ include '../includes/header.php';
     .ed-paylas-btn.x { background: #000; }
     .ed-paylas-btn.linkedin { background: #0A66C2; }
     .ed-paylas-btn.whatsapp { background: #25D366; }
+
+    .ed-gorsel-satiri {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 1.6rem;
+        align-items: start;
+        margin-bottom: 1.6rem;
+        width: calc(100% + 280px);
+        max-width: none;
+    }
+    .ed-gorsel-satiri .ed-gorsel,
+    .ed-gorsel-satiri .ed-gorsel-yok {
+        margin-bottom: 0;
+    }
+
+    .ed-kardes-kutu {
+        background: #f7f9fb;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 2rem;
+    }
+    .ed-kardes-baslik {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0 0 0.9rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid var(--accent-hot);
+        display: inline-block;
+    }
+    .ed-kardes-liste { list-style: none; margin: 0; padding: 0; }
+    .ed-kardes-liste li + li { border-top: 1px solid var(--line); }
+    .ed-kardes-liste a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.7rem 0.2rem;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: color .2s ease;
+    }
+    .ed-kardes-liste a:hover { color: var(--accent-hot); }
+    .ed-kardes-tarih { flex-shrink: 0; font-size: 0.78rem; color: var(--muted); font-weight: 500; }
 
     .ed-geri {
         display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 2.6rem;
@@ -302,6 +356,9 @@ include '../includes/header.php';
     @media print {
         .ed-araclar, .ed-breadcrumb, .ed-geri, .ed-paylas, .ed-diger-baslik, .ed-diger-grid, .ed-sayfalama, header, footer { display: none !important; }
     }
+    @media (max-width: 1050px) {
+        .ed-gorsel-satiri { grid-template-columns: 1fr; width: 100%; }
+    }
     @media (max-width: 640px) {
         .ed-bilgi-satiri { grid-template-columns: 1fr; }
     }
@@ -322,19 +379,31 @@ include '../includes/header.php';
 
                 <div class="ed-ust-satir">
                     <h1><?php echo htmlspecialchars($etkinlik['baslik']); ?></h1>
-                    <div class="ed-araclar">
-                        <button type="button" class="ed-arac-btn" id="edFontKucult" title="Yazıyı küçült">A-</button>
-                        <button type="button" class="ed-arac-btn is-active" id="edFontNormal" title="Normal boyut">A</button>
-                        <button type="button" class="ed-arac-btn" id="edFontBuyut" title="Yazıyı büyüt">A+</button>
-                        <button type="button" class="ed-arac-btn" id="edYazdir" title="Yazdır"><i class="bi bi-printer"></i></button>
-                    </div>
                 </div>
 
-                <?php if (!empty($etkinlik['resim'])): ?>
-                    <img class="ed-gorsel" src="<?php echo $basePath . htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>">
-                <?php else: ?>
-                    <div class="ed-gorsel-yok">GÖRSEL</div>
-                <?php endif; ?>
+                <div class="ed-gorsel-satiri">
+                    <?php if (!empty($etkinlik['resim'])): ?>
+                        <img class="ed-gorsel" src="<?php echo $basePath . htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>">
+                    <?php else: ?>
+                        <div class="ed-gorsel-yok">GÖRSEL</div>
+                    <?php endif; ?>
+
+                    <?php if (count($kardesler) > 0): ?>
+                        <div class="ed-kardes-kutu">
+                            <h3 class="ed-kardes-baslik"><?php echo htmlspecialchars($etkinlik['kategori']); ?> Kategorisindeki Diğer Etkinlikler</h3>
+                            <ul class="ed-kardes-liste">
+                                <?php foreach ($kardesler as $k): ?>
+                                    <li>
+                                        <a href="<?php echo $basePath; ?>pages/etkinlik-detay.php?id=<?php echo (int)$k['id']; ?>">
+                                            <span><?php echo htmlspecialchars($k['baslik']); ?></span>
+                                            <span class="ed-kardes-tarih"><?php echo date('d.m.Y', strtotime($k['tarih'])); ?></span>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                </div>
 
                 <div class="ed-bilgi-satiri">
                     <div class="ed-bilgi-kutu">
@@ -389,16 +458,13 @@ include '../includes/header.php';
                     <?php endif; ?>
                 </div>
 
-                <div class="ed-icerik">
-                    <?php
-                    $detayHtml = etkdDetayHtml($etkinlik['detay'] ?? '');
-                    if ($detayHtml !== '') {
-                        echo $detayHtml;
-                    } else {
-                        echo '<p class="ed-eksik-icerik">Bu etkinlikle ilgili detay bilgisi henüz eklenmemiştir.</p>';
-                    }
-                    ?>
-                </div>
+                <?php
+                $detayHtml = etkdDetayHtml($etkinlik['detay'] ?? '');
+                if ($detayHtml !== ''): ?>
+                    <div class="ed-icerik">
+                        <?php echo $detayHtml; ?>
+                    </div>
+                <?php endif; ?>
 
                 <?php if (!empty($etkinlik['yer']) || !empty($etkinlik['adres'])): ?>
                     <h2 class="ed-konum-baslik">Konum</h2>
@@ -467,26 +533,6 @@ include '../includes/header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // --- Yazı boyutu / yazdır ---
-    const icerik = document.querySelector('.ed-icerik');
-    const btnKucult = document.getElementById('edFontKucult');
-    const btnNormal = document.getElementById('edFontNormal');
-    const btnBuyut = document.getElementById('edFontBuyut');
-    const btnYazdir = document.getElementById('edYazdir');
-    const tumButonlar = [btnKucult, btnNormal, btnBuyut].filter(Boolean);
-    const boyutlar = { kucuk: '0.88rem', normal: '0.98rem', buyuk: '1.12rem' };
-
-    function boyutAyarla(hedefBtn, boyut) {
-        if (!icerik) return;
-        icerik.style.fontSize = boyut;
-        tumButonlar.forEach(function (b) { b.classList.remove('is-active'); });
-        if (hedefBtn) hedefBtn.classList.add('is-active');
-    }
-    if (btnKucult) btnKucult.addEventListener('click', function () { boyutAyarla(btnKucult, boyutlar.kucuk); });
-    if (btnNormal) btnNormal.addEventListener('click', function () { boyutAyarla(btnNormal, boyutlar.normal); });
-    if (btnBuyut) btnBuyut.addEventListener('click', function () { boyutAyarla(btnBuyut, boyutlar.buyuk); });
-    if (btnYazdir) btnYazdir.addEventListener('click', function () { window.print(); });
-
     // --- Paylaşım linkleri (mevcut sayfa URL'sine göre) ---
     const suankiUrl = encodeURIComponent(window.location.href);
     const baslikMetni = encodeURIComponent(document.title);
