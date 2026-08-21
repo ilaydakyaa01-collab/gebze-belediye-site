@@ -41,7 +41,7 @@ CREATE TABLE `eski_baskanlar` (
 -- Tablo döküm verisi `eski_baskanlar`
 --
 
-INSERT INTO `eski_baskanlar` (`id`, `ad_soyad`, `resim`, `donem_baslangic`, `donem_bitis`, `aciklama`, `sira`) VALUES
+INSERT INTO `eski_baskanlar` (`id`,`ad_soyad`, `resim`, `donem_baslangic`, `donem_bitis`, `aciklama`, `sira`) VALUES
 (1, 'Adnan Köşker', 'img/eski-baskanlar/adnanKosker.jpg', '2009', '2019', NULL, 1),
 (2, 'İbrahim Pehlivan', 'img/eski-baskanlar/ibrahimPehlivan.jpg', '2004', '2009', NULL, 2),
 (3, 'Ahmet Penbegüllü', 'img/eski-baskanlar/ahmetPenbegullu.jpg', '1994', '2004', NULL, 3),

@@ -109,7 +109,17 @@ include '../../includes/header.php';
     .proje-breadcrumb a { color: #9aa0a7; }
     .proje-breadcrumb a:hover { color: var(--brand-color, #0f5d3c); }
 
-    .proje-ustbaslik { margin-bottom: 30px; }
+    /* Başlık + kategori/hamburger tek satırda: başlık solda, diğerleri sağda */
+    .proje-ust-satir {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .proje-ustbaslik { margin-bottom: 0; }
     .proje-ustbaslik h1 {
         font-size: 2rem;
         font-weight: 700;
@@ -123,9 +133,10 @@ include '../../includes/header.php';
     .proje-sekme-satir {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 34px;
+        justify-content: flex-end;
+        gap: 1.5rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
     }
 
     .proje-sekme-satir .proje-sekme {
@@ -190,7 +201,8 @@ include '../../includes/header.php';
     .proje-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 56px 40px;
+        align-items: start;
     }
     .proje-kart {
         background: #fff;
@@ -199,14 +211,13 @@ include '../../includes/header.php';
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        height: fit-content;
         transition: all .25s ease;
     }
 
     .proje-grid .proje-kart {
     width: auto;
     aspect-ratio: auto;
-    flex: none;
+    height: auto;
     background: #fff;
     }
     .proje-kart:hover {
@@ -258,7 +269,11 @@ include '../../includes/header.php';
     .proje-durum.devam { color: #d97706; }
     .proje-durum.planlanan { color: #6b7280; }
 
-    .proje-meta { padding: 16px 18px 18px; display: flex; flex-direction: column; }
+    .proje-meta {
+        padding: 16px 18px 18px;
+        display: flex;
+        flex-direction: column;
+    }
     .proje-kategori-etiket {
         font-size: 12px;
         font-weight: 700;
@@ -267,7 +282,18 @@ include '../../includes/header.php';
         color: var(--brand-color, #0f5d3c);
         margin-bottom: 8px;
     }
-    .proje-meta h3 { font-size: 1.08rem; font-weight: 700; margin: 0; line-height: 1.35; color: #1a1a1a; }
+    .proje-meta h3 {
+        font-size: 1.08rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.35;
+        color: #1a1a1a;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: calc(1.35em * 2);
+    }
 
     .proje-pagination {
         display: flex;
@@ -475,6 +501,10 @@ include '../../includes/header.php';
     @media (max-width: 980px) {
         .proje-grid { grid-template-columns: repeat(2, 1fr); }
     }
+    @media (max-width: 720px) {
+        .proje-ust-satir { flex-direction: column; align-items: stretch; }
+        .proje-sekme-satir { justify-content: flex-start; }
+    }
     @media (max-width: 580px) {
         .proje-grid { grid-template-columns: 1fr; }
         .proje-yan { width: 100%; max-width: 100%; }
@@ -489,21 +519,23 @@ include '../../includes/header.php';
             <span>Tüm Projeler</span>
         </nav>
 
-        <div class="proje-ustbaslik">
-            <h1>Tüm Projeler</h1>
-            <p>Tüm projeleri buradan görüntüleyebilirsiniz.</p>
-        </div>
+        <div class="proje-ust-satir">
+            <div class="proje-ustbaslik">
+                <h1>Tüm Projeler</h1>
+                <p>Tüm projeleri buradan görüntüleyebilirsiniz.</p>
+            </div>
 
-        <div class="proje-sekme-satir">
-            <nav class="proje-sekme">
-                <a href="<?php echo projeFiltreUrl($basePath, '', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === '' ? 'is-active' : ''; ?>">Tümü</a>
-                <a href="<?php echo projeFiltreUrl($basePath, 'planlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'planlanan' ? 'is-active' : ''; ?>">Planlanan</a>
-                <a href="<?php echo projeFiltreUrl($basePath, 'devam-eden', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'devam-eden' ? 'is-active' : ''; ?>">Devam Eden</a>
-                <a href="<?php echo projeFiltreUrl($basePath, 'tamamlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'tamamlanan' ? 'is-active' : ''; ?>">Tamamlanan</a>
-            </nav>
-            <button type="button" class="proje-hamburger" id="projeHamburger" aria-label="Menüyü aç">
-                <i class="bi bi-list"></i>
-            </button>
+            <div class="proje-sekme-satir">
+                <nav class="proje-sekme">
+                    <a href="<?php echo projeFiltreUrl($basePath, '', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === '' ? 'is-active' : ''; ?>">Tümü</a>
+                    <a href="<?php echo projeFiltreUrl($basePath, 'planlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'planlanan' ? 'is-active' : ''; ?>">Planlanan</a>
+                    <a href="<?php echo projeFiltreUrl($basePath, 'devam-eden', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'devam-eden' ? 'is-active' : ''; ?>">Devam Eden</a>
+                    <a href="<?php echo projeFiltreUrl($basePath, 'tamamlanan', $aktifKategoriSlug); ?>" class="<?php echo $aktifDurumSlug === 'tamamlanan' ? 'is-active' : ''; ?>">Tamamlanan</a>
+                </nav>
+                <button type="button" class="proje-hamburger" id="projeHamburger" aria-label="Menüyü aç">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
         </div>
 
         <div class="proje-layout">

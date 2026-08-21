@@ -1,0 +1,114 @@
+.dd-bolumu { padding: 7rem 0 5rem; }
+
+.dd-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.4rem;
+}
+.dd-breadcrumb a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.dd-breadcrumb a:hover { color: var(--accent-hot); }
+
+/* --- İki kolon düzen: içerik solda, "Diğer Duyurular" sağda --- */
+.dd-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2.4rem;
+    align-items: start;
+}
+
+.dd-karti {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 2rem 2.2rem;
+}
+
+.dd-tarih {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 0.9rem;
+}
+.dd-tarih i { color: var(--accent-hot); }
+
+.dd-baslik { font-size: clamp(1.4rem, 2.6vw, 1.8rem); font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 1.5rem; }
+
+/* Gebze Belediyesi'nin diğer detay sayfalarındaki (Meclis Kararları,
+   Kurumsal Kimlik) "İndir" butonuyla aynı sade lacivert hap tasarım */
+.dd-indir {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .2s ease;
+}
+.dd-indir:hover { background: #004a8f; }
+
+.dd-belge-yok { color: var(--muted); font-style: italic; font-size: 0.92rem; margin: 0; }
+
+.dd-geri {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1.6rem;
+    padding: 0.7rem 1.4rem; background: var(--white); color: var(--navy); border: 1px solid var(--line); border-radius: 999px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: border-color .2s ease, color .2s ease;
+}
+.dd-geri:hover { border-color: var(--accent-hot); color: var(--accent-hot); }
+
+/* --- Sağdaki "Diğer Duyurular" kutusu --- */
+.dd-sidebar { position: sticky; top: 100px; }
+.dd-yan-kutu {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.4rem;
+}
+.dd-yan-kutu h3 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--accent-hot);
+    display: inline-block;
+}
+.dd-diger-liste { list-style: none; margin: 0; padding: 0; }
+.dd-diger-liste li + li { border-top: 1px solid var(--line); }
+.dd-diger-liste a {
+    display: block;
+    padding: 0.7rem 0.2rem;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: color .2s ease;
+}
+.dd-diger-liste a:hover { color: var(--accent-hot); }
+.dd-diger-liste .dd-diger-tarih {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.76rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.dd-bulunamadi { text-align: center; padding: 4rem 0; }
+.dd-bulunamadi h1 { font-size: 1.6rem; color: var(--navy); margin-bottom: 0.8rem; }
+.dd-bulunamadi p { color: var(--muted); margin-bottom: 1.6rem; }
+
+@media (max-width: 900px) {
+    .dd-layout { grid-template-columns: 1fr; }
+    .dd-sidebar { position: static; order: -1; }
+}

@@ -294,10 +294,10 @@ include '../includes/header.php';
                     </div>
 
                     <div class="etk-tarih-cipler" id="etkTarihCipler">
-                        <button type="button" class="etk-cip is-active" data-tarih-filtre="tumu">Tümü</button>
+                        <button type="button" class="etk-cip" data-tarih-filtre="tumu">Tümü</button>
                         <button type="button" class="etk-cip" data-tarih-filtre="bugun">Bugün</button>
                         <button type="button" class="etk-cip" data-tarih-filtre="hafta">Bu Hafta</button>
-                        <button type="button" class="etk-cip" data-tarih-filtre="ay">Bu Ay</button>
+                        <button type="button" class="etk-cip is-active" data-tarih-filtre="ay">Bu Ay</button>
                     </div>
 
                     <div class="etkinlik-grid" id="etkGrid">
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sayfalamaKutusu = document.getElementById('etkSayfalama');
 
     const SAYFA_BASINA = 6;
-    let aktifTarihFiltre = 'tumu';
+    let aktifTarihFiltre = 'ay';
     let aktifKategori = 'tumu-kategori';
     let aktifSayfa = 1;
 

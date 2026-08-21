@@ -1,0 +1,188 @@
+/* Genel .section-header'ın ortalama kuralını eziyor,
+   Haberler sayfasında başlığı sola alıyoruz */
+.haber-bolumu .section-header {
+    text-align: left;
+    margin-bottom: 0;
+}
+.haber-bolumu .section-header p {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Başlık + hamburger aynı satırda; hamburger açıklama
+   metninin (paragrafın) hizasına gelsin diye alt tarafa hizalı */
+.haber-ust-satir {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+}
+
+.haber-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+}
+.haber-breadcrumb a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.haber-breadcrumb a:hover { color: var(--accent-hot); }
+
+.haber-menu-wrap { position: relative; flex-shrink: 0; }
+
+.haber-hamburger-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease;
+}
+.haber-hamburger-btn:hover {
+    border-color: var(--accent-hot);
+    color: var(--accent-hot);
+}
+
+.haber-hamburger-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 220px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 0.5rem;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+.haber-hamburger-dropdown[hidden] { display: none; }
+.haber-hamburger-dropdown a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+}
+.haber-hamburger-dropdown a:hover { background: #f7f9fb; color: var(--accent-hot); }
+.haber-hamburger-dropdown a.is-active {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 600;
+}
+
+@media (max-width: 640px) {
+    .haber-hamburger-dropdown { right: 0; left: auto; }
+}
+
+/* Bu stil sadece haberler.php'ye özel — anasayfadaki .haber-kart
+   tasarımını etkilemez, çünkü hepsi .haber-bolumu içine sarılı */
+.haber-bolumu .haber-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+.haber-bolumu .haber-kart {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.haber-bolumu .haber-kart:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.haber-bolumu .haber-gorsel {
+    position: relative;
+    aspect-ratio: 1.86 / 1;
+    overflow: hidden;
+    background: #eef1f4;
+    display: block;
+}
+.haber-bolumu .haber-gorsel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s ease;
+}
+.haber-bolumu .haber-kart:hover .haber-gorsel img {
+    transform: scale(1.06);
+}
+
+.haber-bolumu .haber-meta {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+.haber-bolumu .haber-meta time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+.haber-bolumu .haber-meta time::before {
+    content: '\F1F7';
+    font-family: 'bootstrap-icons';
+    color: var(--accent-hot);
+}
+.haber-bolumu .haber-meta h3 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.haber-bolumu .haber-meta h3 a { color: inherit; text-decoration: none; }
+.haber-bolumu .haber-meta h3 a:hover { color: var(--accent-hot); }
+
+.haber-bolumu .haber-detay-link {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.5rem 1.2rem;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.haber-bolumu .haber-detay-link:hover {
+    background: #004a8f;
+    text-decoration: none;
+}
+
+@media (max-width: 992px) {
+    .haber-bolumu .haber-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .haber-bolumu .haber-grid { grid-template-columns: 1fr; }
+}

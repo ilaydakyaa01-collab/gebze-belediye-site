@@ -37,24 +37,24 @@ require_once __DIR__ . '/init.php';
             <li class="has-dropdown">
                 <a href="#">Kurumsal</a>
                 <ul class="dropdown">
-                    <li><a href="<?php echo $basePath; ?>pages/vizyonumuz.php">Vizyonumuz</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/misyonumuz.php">Misyonumuz</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/ilkelerimiz.php">İlkelerimiz</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/enerji-politikamiz.php">Enerji Politikamız</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/belediye-meclisi.php">Belediye Meclisi</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/mudurlukler.php">Müdürlükler</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/eski-baskanlar.php">Eski Başkanlar</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/yonetim-semasi.php">Yönetim Şeması</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/baskan-yardimcilari.php">Başkan Yardımcıları</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/baskan-danismanlari.php">Başkan Danışmanı</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/arabuluculuk-komisyonu.php">Arabuluculuk Komisyonu</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/etik-komisyonu.php">Etik Komisyonu</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/meclis-kararlari.php">Meclis Kararları</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-kimlik.php">Kurumsal Kimlik</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-raporlar.php">Kurumsal Raporlar</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/kurumsal-dokumanlar.php">Kurumsal Dokumanlar</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/yayinlar.php">Yayınlar</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/kvkk.php">KVKK Aydınlatma Metni</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/vizyonumuz.php">Vizyonumuz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/misyonumuz.php">Misyonumuz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/ilkelerimiz.php">İlkelerimiz</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/enerji-politikamiz.php">Enerji Politikamız</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/belediye-meclisi.php">Belediye Meclisi</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/yonetim-semasi.php">Yönetim Şeması</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/baskan-yardimcilari.php">Başkan Yardımcıları</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/baskan-danismanlari.php">Başkan Danışmanı</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/mudurlukler.php">Müdürlükler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/eski-baskanlar.php">Eski Başkanlar</a></li>                    
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/arabuluculuk-komisyonu.php">Arabuluculuk Komisyonu</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/etik-komisyonu.php">Etik Komisyonu</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/meclis-kararlari.php">Meclis Kararları</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/kurumsal-kimlik.php">Kurumsal Kimlik</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/kurumsal-raporlar.php">Kurumsal Raporlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/kurumsal-dokumanlar.php">Kurumsal Dokumanlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/yayinlar.php">Yayınlar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/kurumsal/kvkk.php">KVKK Aydınlatma Metni</a></li>
                 </ul>
             </li>
             <li class="has-dropdown">
@@ -76,13 +76,13 @@ require_once __DIR__ . '/init.php';
             <li class="has-dropdown">
                 <a href="#">Haberler</a>
                 <ul class="dropdown">
-                    <li><a href="<?php echo $basePath; ?>pages/haberler.php">Haberler</a></li>
-                    <li><a href="#">Duyurular</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/videolar.php">Videolar</a></li>
-                    <li><a href="#">Fotoğraf Galerisi</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/haberler/haberler.php">Haberler</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/haberler/duyurular.php">Duyurular</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/haberler/videolar.php">Videolar</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/haberler/fotograf-galerisi.php">Fotoğraf Galerisi</a></li>
                 </ul>
             </li>
-            <li><a href="<?php echo $basePath; ?>pages/iletisim/iletisim.php">İletişim</a></li>
+            <li><a href="<?php echo $basePath; ?>pages/iletisim.php">İletişim</a></li>
         </ul>
 
         <button class="nav-toggle" id="navToggle" aria-label="Menüyü aç" aria-expanded="false">

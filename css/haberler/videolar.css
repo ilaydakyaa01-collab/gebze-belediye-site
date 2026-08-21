@@ -1,0 +1,218 @@
+.video-bolumu { padding: 7rem 0 5rem; }
+
+.video-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+}
+.video-breadcrumb a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.video-breadcrumb a:hover { color: var(--accent-hot); }
+
+/* --- Başlık + hamburger aynı satırda, açıklama metni hizasında --- */
+.video-ust-satir {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+}
+.video-ustbaslik h1 {
+    font-size: clamp(1.8rem, 3vw, 2.3rem);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+}
+.video-ustbaslik p { color: var(--muted); font-size: 1rem; margin: 0; }
+
+.video-menu-wrap { position: relative; flex-shrink: 0; }
+.video-hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.video-hamburger:hover { border-color: var(--accent-hot); color: var(--accent-hot); }
+
+.video-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 200px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 0.5rem;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+.video-dropdown[hidden] { display: none; }
+.video-dropdown a {
+    display: block;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+}
+.video-dropdown a:hover { background: var(--bg); }
+.video-dropdown a.is-active {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* --- Video grid'i --- */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+}
+.video-kart {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.video-kart:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+.video-thumb-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #0f1720;
+    overflow: hidden;
+}
+.video-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+.video-kart:hover .video-thumb-wrap img { transform: scale(1.06); }
+
+.video-oynat-ikon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, transparent 45%, rgba(0, 26, 51, 0.5));
+}
+.video-oynat-ikon i {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(246, 160, 26, 0.94);
+    color: var(--navy-deep, #001a33);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+    transition: transform .2s ease;
+}
+.video-kart:hover .video-oynat-ikon i { transform: scale(1.08); }
+
+.video-icerik { padding: 1rem 1.2rem 1.2rem; }
+.video-icerik h3 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 0.4rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.video-tarih { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+.video-tarih i { color: var(--accent-hot); }
+
+.video-bos { text-align: center; color: var(--muted); padding: 3rem 0; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+
+/* --- Sayfalama --- */
+.video-pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2rem;
+}
+.video-pagination a, .video-pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.video-pagination a:hover { border-color: var(--accent-hot); color: var(--accent-hot); }
+.video-pagination .active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.video-pagination .disabled { opacity: 0.4; pointer-events: none; }
+
+@media (max-width: 992px) {
+    .video-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .video-grid { grid-template-columns: 1fr; }
+    .video-dropdown { right: 0; left: auto; }
+}
+
+/* --- Video oynatma modalı --- */
+.video-modal-arkaplan {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 12, 26, 0.9);
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+.video-modal-arkaplan[hidden] { display: none !important; }
+
+.video-modal { position: relative; width: min(900px, 100%); }
+.video-modal-kapat {
+    position: absolute;
+    top: -3rem;
+    right: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.video-modal-kapat:hover { background: rgba(255,255,255,0.26); }
+
+.video-modal-govde {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.video-modal-govde iframe { width: 100%; height: 100%; border: none; }

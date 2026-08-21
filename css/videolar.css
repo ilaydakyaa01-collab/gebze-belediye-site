@@ -17,7 +17,7 @@
 .breadcrumb a:hover { color: var(--navy); }
 .breadcrumb span:last-child { color: var(--navy); font-weight: 500; }
 
-.videolar-baslik { margin-bottom: 1.6rem; }
+.videolar-baslik {margin-bottom: 1.6rem; }
 .videolar-baslik h2::after {
     content: "";
     display: block;
@@ -244,7 +244,7 @@
 .meclis-arama-wrap { position: relative; width: 100%; margin-bottom: 0; }
 .meclis-arama {
     display: block;
-    width: 100%;
+    width: 150%;
     padding: 0.75rem 1.15rem 0.75rem 2.8rem;
     border: 1px solid var(--line);
     border-radius: 999px;

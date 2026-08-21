@@ -34,10 +34,30 @@ if (!function_exists('trTarih')) {
 
 if (!function_exists('projeDurumYazi')) {
     function projeDurumYazi(string $durum): string {
-        return match ($durum) {
-            'tamamlanan' => 'Tamamlanan',
-            'planlanan' => 'Planlanan',
+        $normalize = trim(mb_strtolower($durum, 'UTF-8'));
+        return match (true) {
+            in_array($normalize, ['tamamlanan', 'tamamlandi', 'tamamlandı'], true) => 'Tamamlanan',
+            in_array($normalize, ['planlanan', 'planlaniyor', 'planlanıyor'], true) => 'Planlanan',
+            in_array($normalize, ['devam', 'devam_eden', 'devam eden', 'devameden'], true) => 'Devam Eden',
             default => 'Devam Eden',
+        };
+    }
+}
+
+if (!function_exists('projeDurumAnahtari')) {
+    /**
+     * projeler.durum sütunundaki değeri, filtre butonlarının
+     * data-filter değerleriyle (devam/tamamlanan/planlanan) birebir
+     * eşleşecek "temiz" bir anahtara çevirir. data-durum özelliğinde
+     * bunu kullanmak, yazım farklarından dolayı filtrelemenin boş
+     * sonuç dönmesini engeller.
+     */
+    function projeDurumAnahtari(string $durum): string {
+        $normalize = trim(mb_strtolower($durum, 'UTF-8'));
+        return match (true) {
+            in_array($normalize, ['tamamlanan', 'tamamlandi', 'tamamlandı'], true) => 'tamamlanan',
+            in_array($normalize, ['planlanan', 'planlaniyor', 'planlanıyor'], true) => 'planlanan',
+            default => 'devam',
         };
     }
 }

@@ -50,7 +50,7 @@ include 'includes/header.php';
             <div class="ticker-track-wrap">
                 <div class="ticker-track" id="tickerTrack">
                     <?php foreach (array_merge($tickerHaberler, $tickerHaberler) as $item): ?>
-                        <a class="ticker-item" href="pages/haberler.php">
+                        <a class="ticker-item" href="pages/haberler/haberler.php">
                             <span class="ticker-dot" aria-hidden="true"></span>
                             <?php echo htmlspecialchars($item['baslik']); ?>
                         </a>
@@ -108,14 +108,14 @@ include 'includes/header.php';
                         <?php foreach ($haberler as $i => $haber): ?>
                             <?php $img = !empty($haber['resim']) ? $haber['resim'] : 'img/haberler/haber' . (($i % 14) + 1) . '.jpg'; ?>
                             <article class="haber-kart">
-                                <a href="pages/haberler.php" class="haber-gorsel">
+                                <a href="pages/haberler/haberler.php" class="haber-gorsel">
                                     <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($haber['baslik']); ?>" loading="lazy">
                                 </a>
                                 <div class="haber-meta">
                                     <time datetime="<?php echo htmlspecialchars($haber['tarih']); ?>">
                                         <?php echo trTarih($haber['tarih']); ?>
                                     </time>
-                                    <h3><a href="pages/haberler.php"><?php echo htmlspecialchars($haber['baslik']); ?></a></h3>
+                                    <h3><a href="pages/haberler/haberler.php"><?php echo htmlspecialchars($haber['baslik']); ?></a></h3>
                                 </div>
                             </article>
                         <?php endforeach; ?>
@@ -124,7 +124,7 @@ include 'includes/header.php';
                     <?php endif; ?>
                 </div>
                 <div class="section-actions">
-                    <a href="pages/haberler.php" class="btn-outline">Tüm Haberler <i class="bi bi-arrow-right"></i></a>
+                    <a href="pages/haberler/haberler.php" class="btn-outline">Tüm Haberler <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -132,18 +132,18 @@ include 'includes/header.php';
                 <div class="haber-grid">
                     <?php foreach ($duyurularAna as $duyuru): ?>
                         <article class="haber-kart">
-                            <a href="pages/duyurular.php" class="haber-gorsel">
+                            <a href="pages/haberler/duyurular.php" class="haber-gorsel">
                                 <img src="<?php echo htmlspecialchars($duyuru['resim']); ?>" alt="Duyuru" loading="lazy">
                             </a>
                             <div class="haber-meta">
                                 <time datetime="<?php echo htmlspecialchars($duyuru['tarih']); ?>"><?php echo trTarih($duyuru['tarih']); ?></time>
-                                <h3><a href="pages/duyurular.php"><?php echo htmlspecialchars($duyuru['baslik']); ?></a></h3>
+                                <h3><a href="pages/haberler/duyurular.php"><?php echo htmlspecialchars($duyuru['baslik']); ?></a></h3>
                             </div>
                         </article>
                     <?php endforeach; ?>
                 </div>
                 <div class="section-actions">
-                    <a href="pages/duyurular.php" class="btn-outline">Tüm Duyurular <i class="bi bi-arrow-right"></i></a>
+                    <a href="pages/haberler/duyurular.php" class="btn-outline">Tüm Duyurular <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -175,11 +175,30 @@ include 'includes/header.php';
                     <?php endif; ?>
                 </div>
                 <div class="section-actions">
-                    <a href="pages/videolar.php" class="btn-outline">Tüm Videolar <i class="bi bi-arrow-right"></i></a>
+                    <a href="pages/haberler/videolar.php" class="btn-outline">Tüm Videolar <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        /* "is-contain" olan haber görsellerinde (ör. sertifika gibi
+           uyumsuz oranlı belgeler) sade, düz bir arka plan kullanılıyor
+           — görsel kırpılmıyor, arka plan bulanık değil. */
+        .haber-gorsel.is-contain {
+            background: #eef1f4;
+        }
+        .haber-gorsel.is-contain img {
+            object-fit: contain;
+        }
+
+        /* Etkinlik ve proje kartları artık <a> etiketi — varsayılan
+           link alt çizgisi/renk mirasını devre dışı bırakıyoruz */
+        .etkinlik-kart, .proje-kart {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
 
     <section class="etkinlik-bolumu" id="etkinlikler">
         <div class="container">
@@ -198,7 +217,7 @@ include 'includes/header.php';
                 <div class="etkinlik-viewport" id="etkinlikViewport">
                     <div class="etkinlik-track" id="etkinlikTrack">
                         <?php foreach ($etkinlikler as $etkinlik): ?>
-                            <article class="etkinlik-kart">
+                            <a href="pages/etkinlik-detay.php?id=<?php echo (int) $etkinlik['id']; ?>" class="etkinlik-kart">
                                 <div class="etkinlik-gorsel">
                                     <img src="<?php echo htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>" loading="lazy">
                                     <span class="etkinlik-kategori" style="background-color: <?php echo htmlspecialchars($etkinlik['renk']); ?>">
@@ -217,7 +236,7 @@ include 'includes/header.php';
                                     <p><i class="bi bi-clock"></i> <?php echo htmlspecialchars($etkinlik['saat']); ?></p>
                                     <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($etkinlik['yer']); ?></p>
                                 </div>
-                            </article>
+                            </a>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -244,13 +263,13 @@ include 'includes/header.php';
                 <div class="proje-viewport" id="projeViewport">
                     <div class="proje-track" id="projeTrack">
                         <?php foreach ($projeler as $proje): ?>
-                            <article class="proje-kart" data-durum="<?php echo htmlspecialchars($proje['durum']); ?>">
+                            <a href="pages/baskan/projeler.php" class="proje-kart" data-durum="<?php echo htmlspecialchars(projeDurumAnahtari($proje['durum'])); ?>">
                                 <img src="<?php echo htmlspecialchars($proje['resim']); ?>" alt="<?php echo htmlspecialchars($proje['baslik']); ?>" loading="lazy" draggable="false">
                                 <span class="proje-durum"><?php echo htmlspecialchars(projeDurumYazi($proje['durum'])); ?></span>
                                 <div class="proje-overlay">
                                     <h3><?php echo htmlspecialchars($proje['baslik']); ?></h3>
                                 </div>
-                            </article>
+                            </a>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -266,4 +285,126 @@ include 'includes/header.php';
         </div>
     </section>
 
+    <script>
+(function () {
+    var HEDEF_ORAN = 16 / 10;
+    var KIRPMA_ESIGI = 0.05;
+
+    // Görselin kenarlarındaki neredeyse-beyaz boşlukları otomatik tespit
+    // edip kırpar. Gerçek içeriğe (yazı, logo, fotoğraf) dokunmaz.
+    function beyazKenarlariKirp(img, callback) {
+        try {
+            var w = img.naturalWidth;
+            var h = img.naturalHeight;
+            var canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            var veri = ctx.getImageData(0, 0, w, h).data;
+            var ESIK = 245; // bu parlaklığın üzeri "beyaz" sayılır
+
+            function satirBeyazMi(y) {
+                for (var x = 0; x < w; x++) {
+                    var i = (y * w + x) * 4;
+                    if (veri[i] < ESIK || veri[i + 1] < ESIK || veri[i + 2] < ESIK) return false;
+                }
+                return true;
+            }
+            function sutunBeyazMi(x) {
+                for (var y = 0; y < h; y++) {
+                    var i = (y * w + x) * 4;
+                    if (veri[i] < ESIK || veri[i + 1] < ESIK || veri[i + 2] < ESIK) return false;
+                }
+                return true;
+            }
+
+            var ust = 0, alt = h - 1, sol = 0, sag = w - 1;
+            while (ust < alt && satirBeyazMi(ust)) ust++;
+            while (alt > ust && satirBeyazMi(alt)) alt--;
+            while (sol < sag && sutunBeyazMi(sol)) sol++;
+            while (sag > sol && sutunBeyazMi(sag)) sag--;
+
+            var yeniGenislik = sag - sol + 1;
+            var yeniYukseklik = alt - ust + 1;
+
+            // Kırpılacak bir şey yoksa dokunma
+            if (yeniGenislik <= 0 || yeniYukseklik <= 0 || (yeniGenislik === w && yeniYukseklik === h)) {
+                callback(null);
+                return;
+            }
+
+            var kirpCanvas = document.createElement('canvas');
+            kirpCanvas.width = yeniGenislik;
+            kirpCanvas.height = yeniYukseklik;
+            kirpCanvas.getContext('2d').drawImage(canvas, sol, ust, yeniGenislik, yeniYukseklik, 0, 0, yeniGenislik, yeniYukseklik);
+            callback(kirpCanvas.toDataURL('image/jpeg', 0.92));
+        } catch (e) {
+            // Farklı origin'den gelen görsellerde canvas okunamaz; dokunmadan geç
+            callback(null);
+        }
+    }
+
+    function oranaGoreDegerlendir(kutu, img) {
+        var kutuGenislik = kutu.clientWidth;
+        var kutuYukseklik = kutu.clientHeight;
+        if (!kutuGenislik || !kutuYukseklik || !img.naturalWidth || !img.naturalHeight) return;
+
+        var kutuOran = kutuGenislik / kutuYukseklik;
+        var gorselOran = img.naturalWidth / img.naturalHeight;
+
+        var kirpmaOrani;
+        if (gorselOran > kutuOran) {
+            var olcekliGenislik = kutuYukseklik * gorselOran;
+            kirpmaOrani = (olcekliGenislik - kutuGenislik) / olcekliGenislik;
+        } else {
+            var olcekliYukseklik = kutuGenislik / gorselOran;
+            kirpmaOrani = (olcekliYukseklik - kutuYukseklik) / olcekliYukseklik;
+        }
+
+        if (kirpmaOrani > KIRPMA_ESIGI) {
+            kutu.classList.add('is-contain');
+        } else {
+            kutu.classList.remove('is-contain');
+        }
+    }
+
+    function haberGorselleriDegerlendir() {
+        document.querySelectorAll('.haber-gorsel:not(.video-thumb)').forEach(function (kutu) {
+            var img = kutu.querySelector('img');
+            if (!img || img.dataset.islendi) return;
+
+            function isle() {
+                if (img.dataset.islendi) return;
+                img.dataset.islendi = '1';
+
+                oranaGoreDegerlendir(kutu, img);
+
+                // Görsel "contain" gerektiriyorsa, önce kendi beyaz
+                // kenarlarını kırpmayı dene; sonra tekrar değerlendir.
+                if (kutu.classList.contains('is-contain')) {
+                    beyazKenarlariKirp(img, function (dataUrl) {
+                        if (!dataUrl) return;
+                        var yeniImg = new Image();
+                        yeniImg.onload = function () {
+                            img.src = dataUrl;
+                            oranaGoreDegerlendir(kutu, yeniImg);
+                        };
+                        yeniImg.src = dataUrl;
+                    });
+                }
+            }
+
+            if (img.complete && img.naturalWidth) {
+                isle();
+            } else {
+                img.addEventListener('load', isle);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', haberGorselleriDegerlendir);
+})();
+</script>
 <?php include 'includes/footer.php'; ?>

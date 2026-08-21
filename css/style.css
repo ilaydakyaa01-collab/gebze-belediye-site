@@ -702,6 +702,17 @@ button {
 
 .haber-kart { transition: transform 0.22s ease; }
 .haber-kart:hover { transform: translateY(-4px); }
+.haber-kart:hover .haber-gorsel img { transform: scale(1.04); }
+
+/* JS tarafından eklenir: sadece kart oranına uymayan görsellerde
+   (sertifika gibi belge görselleri) kırpma yapılmaz, beyaz zemin kullanılır */
+.haber-gorsel.is-contain {
+    background: var(--white);
+}
+
+.haber-gorsel.is-contain img {
+    object-fit: contain;
+}
 
 .haber-gorsel {
     display: block;

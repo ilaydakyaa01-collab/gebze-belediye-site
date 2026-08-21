@@ -233,7 +233,6 @@ include '../includes/header.php';
                     <div class="hz-grid" id="hzGrid">
                         <?php foreach ($hizmetler as $i => $hizmet):
                             $katSlug = hzSlug($hizmet['mudurluk']);
-                            $ilkKategoriSlug = hzSlug($kategoriler[0]);
                             // Kartlar artık HER ZAMAN kendi detay sayfamıza gider.
                             // "link" sütunu artık detay sayfası içindeki "TIKLAYINIZ"
                             // gibi CTA metinleri için kullanılıyor, kartın kendisi için değil.
@@ -242,8 +241,7 @@ include '../includes/header.php';
                             <a class="hz-kart hz-kart-oge"
                                href="<?php echo $hzHref; ?>"
                                data-kategori="<?php echo htmlspecialchars($katSlug); ?>"
-                               data-arama="<?php echo htmlspecialchars(mb_strtolower($hizmet['hizmet_adi'] . ' ' . $hizmet['mudurluk'], 'UTF-8')); ?>"
-                               style="<?php echo $katSlug !== $ilkKategoriSlug ? 'display:none;' : ''; ?>">
+                               data-arama="<?php echo htmlspecialchars(mb_strtolower($hizmet['hizmet_adi'] . ' ' . $hizmet['mudurluk'], 'UTF-8')); ?>">
                                 <div class="hz-kart-gorsel">
                                     <?php if (!empty($hizmet['gorsel'])): ?>
                                         <img src="<?php echo $basePath . htmlspecialchars(ltrim($hizmet['gorsel'], '/')); ?>" alt="<?php echo htmlspecialchars($hizmet['hizmet_adi']); ?>" loading="lazy">
@@ -268,9 +266,14 @@ include '../includes/header.php';
                     <div class="hz-kutu">
                         <h3>Kategoriler</h3>
                         <ul class="hz-kategori-liste" id="hzKategoriListe">
+                            <li>
+                                <button type="button" class="is-active" data-kategori="tumu">
+                                    Tümü
+                                </button>
+                            </li>
                             <?php foreach ($kategoriler as $i => $kat): ?>
                                 <li>
-                                    <button type="button" class="<?php echo $i === 0 ? 'is-active' : ''; ?>" data-kategori="<?php echo htmlspecialchars(hzSlug($kat)); ?>">
+                                    <button type="button" data-kategori="<?php echo htmlspecialchars(hzSlug($kat)); ?>">
                                         <?php echo htmlspecialchars($kat); ?>
                                     </button>
                                 </li>
@@ -305,8 +308,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (q !== '') {
                 // Arama yazılıyorsa kategoriden bağımsız, tüm kartlarda ara
                 uygun = kart.dataset.arama.includes(q);
+            } else if (aktifKategori === 'tumu') {
+                // "Tümü" seçiliyse kategori fark etmeksizin her şeyi göster
+                uygun = true;
             } else {
-                // Arama boşsa sadece seçili kategoriyi göster
+                // Belirli bir kategori seçiliyse sadece onu göster
                 uygun = kart.dataset.kategori === aktifKategori;
             }
             kart.style.display = uygun ? '' : 'none';
@@ -332,4 +338,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<?php include '../includes/footer.php'; ?> 
+<?php include '../includes/footer.php'; ?>

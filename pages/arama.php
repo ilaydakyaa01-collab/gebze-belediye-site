@@ -45,7 +45,7 @@ if ($q !== '') {
             'tur' => 'Yönetim',
             'baslik' => $row['ad_soyad'],
             'aciklama' => $row['unvan'],
-            'link' => 'yonetim-semasi.php',
+            'link' => 'kurumsal/yonetim-semasi.php',
         ];
     }
 
@@ -57,7 +57,7 @@ if ($q !== '') {
             'tur' => 'Müdürlük',
             'baslik' => $row['birim_adi'],
             'aciklama' => $row['sorumlu_ad_soyad'],
-            'link' => 'yonetim-semasi.php',
+            'link' => '',
         ];
     }
 }
@@ -65,7 +65,11 @@ if ($q !== '') {
 include '../includes/header.php';
 ?>
 
-<section class="page-content">
+<style>
+    .arama-sonuc-kart-pasif { cursor: default; }
+</style>
+
+<section class="page-content" style="padding-bottom: 4rem;">
     <div class="container">
         <header class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
             <h2>Arama Sonuçları</h2>
@@ -79,7 +83,7 @@ include '../includes/header.php';
         </header>
 
         <form action="<?php echo $basePath; ?>pages/arama.php" method="GET" class="yonetim-arama" style="max-width: 420px; margin-bottom: 2rem;">
-            <input type="text" name="q" placeholder="Sitede ara..." value="<?php echo htmlspecialchars($q); ?>">
+            <input type="text" name="q" placeholder="Sitede ara..." value="<?php echo htmlspecialchars($q); ?>" autocomplete="off">
             <button type="submit"><i class="bi bi-search"></i></button>
         </form>
 
@@ -88,11 +92,19 @@ include '../includes/header.php';
         <?php elseif (count($sonuclar) > 0): ?>
             <div class="arama-sonuc-liste">
                 <?php foreach ($sonuclar as $sonuc): ?>
-                    <a href="<?php echo $basePath . 'pages/' . $sonuc['link']; ?>" class="arama-sonuc-kart">
-                        <span class="arama-sonuc-tur"><?php echo htmlspecialchars($sonuc['tur']); ?></span>
-                        <h3><?php echo htmlspecialchars($sonuc['baslik']); ?></h3>
-                        <p><?php echo htmlspecialchars($sonuc['aciklama']); ?></p>
-                    </a>
+                    <?php if (!empty($sonuc['link'])): ?>
+                        <a href="<?php echo $basePath . 'pages/' . $sonuc['link']; ?>" class="arama-sonuc-kart">
+                            <span class="arama-sonuc-tur"><?php echo htmlspecialchars($sonuc['tur']); ?></span>
+                            <h3><?php echo htmlspecialchars($sonuc['baslik']); ?></h3>
+                            <p><?php echo htmlspecialchars($sonuc['aciklama']); ?></p>
+                        </a>
+                    <?php else: ?>
+                        <div class="arama-sonuc-kart arama-sonuc-kart-pasif">
+                            <span class="arama-sonuc-tur"><?php echo htmlspecialchars($sonuc['tur']); ?></span>
+                            <h3><?php echo htmlspecialchars($sonuc['baslik']); ?></h3>
+                            <p><?php echo htmlspecialchars($sonuc['aciklama']); ?></p>
+                        </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

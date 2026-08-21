@@ -1,16 +1,4 @@
 <?php
-/**
- * ETKİNLİK DETAY SAYFASI
- * -------------------------------------------------------------
- * Gerçek sitedeki (gebze.bel.tr) yapıya göre: başlık + yazı boyutu/
- * yazdır araçları, görsel, bilgi kutuları (Tarih/Saat/Kategori +
- * Yer), harita, paylaşım butonları, en altta tam genişlikte
- * "Diğer Etkinlikler" grid + sayfalama.
- *
- * "Hızlı Erişim" arama kutusu ve "Bizi Takip Edin" sosyal medya
- * kutusu BİLİNÇLİ OLARAK yok — istenmedi.
- */
-
 include '../includes/db.php';
 require_once '../includes/init.php';
 
@@ -232,14 +220,21 @@ include '../includes/header.php';
     .ed-arac-btn:hover { border-color: var(--accent-hot); color: var(--accent-hot); }
     .ed-arac-btn.is-active { background: var(--navy); border-color: var(--navy); color: var(--white); }
 
-    .ed-gorsel { width: 100%; height: auto; display: block; border-radius: var(--radius); margin-bottom: 1.6rem; }
+    .ed-gorsel { width: 100%; height: auto; display: block; border-radius: var(--radius); margin-bottom: 0; }
     .ed-gorsel-yok {
         width: 100%; height: 240px; border-radius: var(--radius); background: #eef1f4;
         color: var(--muted); display: flex; align-items: center; justify-content: center;
-        font-size: 0.85rem; margin-bottom: 1.6rem;
+        font-size: 0.85rem; margin-bottom: 0;
     }
 
-    .ed-bilgi-satiri { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; max-width: 900px; }
+    /* Resim + Tarih/Yer kutularını dikey olarak bir arada tutan sütun */
+    .ed-gorsel-kolon {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+    }
+
+    .ed-bilgi-satiri { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0; }
     .ed-bilgi-kutu { background: #f7f9fb; border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.85rem; }
     .ed-bilgi-satir { display: flex; align-items: flex-start; gap: 10px; }
     .ed-bilgi-ikon { width: 34px; height: 34px; border-radius: 8px; background: #eef4fb; color: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
@@ -268,15 +263,6 @@ include '../includes/header.php';
     .ed-konum-baslik { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin: 0 0 1rem; }
     .ed-harita-sarici { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); margin-bottom: 2rem; }
     .ed-harita-sarici iframe { width: 100%; height: 280px; border: 0; display: block; }
-
-    .ed-paylas { background: #f7f9fb; border: 1px solid var(--line); border-radius: 12px; padding: 1.2rem 1.4rem; margin-bottom: 2.4rem; }
-    .ed-paylas-baslik { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0 0 0.9rem; }
-    .ed-paylas-butonlar { display: flex; flex-wrap: wrap; gap: 8px; }
-    .ed-paylas-btn { display: inline-flex; align-items: center; gap: 7px; padding: 0.55rem 1.1rem; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; text-decoration: none; border: none; cursor: pointer; }
-    .ed-paylas-btn.facebook { background: #1877F2; }
-    .ed-paylas-btn.x { background: #000; }
-    .ed-paylas-btn.linkedin { background: #0A66C2; }
-    .ed-paylas-btn.whatsapp { background: #25D366; }
 
     .ed-gorsel-satiri {
         display: grid;
@@ -354,7 +340,7 @@ include '../includes/header.php';
     .ed-bulunamadi p { color: var(--muted); margin-bottom: 1.6rem; }
 
     @media print {
-        .ed-araclar, .ed-breadcrumb, .ed-geri, .ed-paylas, .ed-diger-baslik, .ed-diger-grid, .ed-sayfalama, header, footer { display: none !important; }
+        .ed-araclar, .ed-breadcrumb, .ed-geri, .ed-diger-baslik, .ed-diger-grid, .ed-sayfalama, header, footer { display: none !important; }
     }
     @media (max-width: 1050px) {
         .ed-gorsel-satiri { grid-template-columns: 1fr; width: 100%; }
@@ -382,11 +368,66 @@ include '../includes/header.php';
                 </div>
 
                 <div class="ed-gorsel-satiri">
-                    <?php if (!empty($etkinlik['resim'])): ?>
-                        <img class="ed-gorsel" src="<?php echo $basePath . htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>">
-                    <?php else: ?>
-                        <div class="ed-gorsel-yok">GÖRSEL</div>
-                    <?php endif; ?>
+                    <div class="ed-gorsel-kolon">
+                        <?php if (!empty($etkinlik['resim'])): ?>
+                            <img class="ed-gorsel" src="<?php echo $basePath . htmlspecialchars($etkinlik['resim']); ?>" alt="<?php echo htmlspecialchars($etkinlik['baslik']); ?>">
+                        <?php else: ?>
+                            <div class="ed-gorsel-yok">GÖRSEL</div>
+                        <?php endif; ?>
+
+                        <div class="ed-bilgi-satiri">
+                            <div class="ed-bilgi-kutu">
+                                <div class="ed-bilgi-satir">
+                                    <div class="ed-bilgi-ikon"><i class="bi bi-calendar-event"></i></div>
+                                    <div>
+                                        <div class="ed-bilgi-etiket">Tarih</div>
+                                        <div class="ed-bilgi-deger"><?php echo date('d.m.Y', strtotime($etkinlik['tarih'])); ?></div>
+                                    </div>
+                                </div>
+                                <?php if (!empty($etkinlik['saat'])): ?>
+                                    <div class="ed-bilgi-satir">
+                                        <div class="ed-bilgi-ikon"><i class="bi bi-clock"></i></div>
+                                        <div>
+                                            <div class="ed-bilgi-etiket">Saat</div>
+                                            <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['saat']); ?></div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (!empty($etkinlik['kategori'])): ?>
+                                    <div class="ed-bilgi-satir">
+                                        <div class="ed-bilgi-ikon"><i class="bi bi-tag"></i></div>
+                                        <div>
+                                            <div class="ed-bilgi-etiket">Kategori</div>
+                                            <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['kategori']); ?></div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <?php if (!empty($etkinlik['yer']) || !empty($etkinlik['adres'])): ?>
+                                <div class="ed-bilgi-kutu">
+                                    <?php if (!empty($etkinlik['yer'])): ?>
+                                        <div class="ed-bilgi-satir">
+                                            <div class="ed-bilgi-ikon"><i class="bi bi-geo-alt"></i></div>
+                                            <div>
+                                                <div class="ed-bilgi-etiket">Yer</div>
+                                                <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['yer']); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if (!empty($etkinlik['adres'])): ?>
+                                        <div class="ed-bilgi-satir">
+                                            <div class="ed-bilgi-ikon"><i class="bi bi-signpost-2"></i></div>
+                                            <div>
+                                                <div class="ed-bilgi-etiket">Adres</div>
+                                                <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['adres']); ?></div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
                     <?php if (count($kardesler) > 0): ?>
                         <div class="ed-kardes-kutu">
@@ -401,59 +442,6 @@ include '../includes/header.php';
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
-                <div class="ed-bilgi-satiri">
-                    <div class="ed-bilgi-kutu">
-                        <div class="ed-bilgi-satir">
-                            <div class="ed-bilgi-ikon"><i class="bi bi-calendar-event"></i></div>
-                            <div>
-                                <div class="ed-bilgi-etiket">Tarih</div>
-                                <div class="ed-bilgi-deger"><?php echo date('d.m.Y', strtotime($etkinlik['tarih'])); ?></div>
-                            </div>
-                        </div>
-                        <?php if (!empty($etkinlik['saat'])): ?>
-                            <div class="ed-bilgi-satir">
-                                <div class="ed-bilgi-ikon"><i class="bi bi-clock"></i></div>
-                                <div>
-                                    <div class="ed-bilgi-etiket">Saat</div>
-                                    <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['saat']); ?></div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($etkinlik['kategori'])): ?>
-                            <div class="ed-bilgi-satir">
-                                <div class="ed-bilgi-ikon"><i class="bi bi-tag"></i></div>
-                                <div>
-                                    <div class="ed-bilgi-etiket">Kategori</div>
-                                    <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['kategori']); ?></div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <?php if (!empty($etkinlik['yer']) || !empty($etkinlik['adres'])): ?>
-                        <div class="ed-bilgi-kutu">
-                            <?php if (!empty($etkinlik['yer'])): ?>
-                                <div class="ed-bilgi-satir">
-                                    <div class="ed-bilgi-ikon"><i class="bi bi-geo-alt"></i></div>
-                                    <div>
-                                        <div class="ed-bilgi-etiket">Yer</div>
-                                        <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['yer']); ?></div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($etkinlik['adres'])): ?>
-                                <div class="ed-bilgi-satir">
-                                    <div class="ed-bilgi-ikon"><i class="bi bi-signpost-2"></i></div>
-                                    <div>
-                                        <div class="ed-bilgi-etiket">Adres</div>
-                                        <div class="ed-bilgi-deger"><?php echo htmlspecialchars($etkinlik['adres']); ?></div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -473,16 +461,6 @@ include '../includes/header.php';
                         <iframe src="https://www.google.com/maps?q=<?php echo urlencode($haritaSorgusu); ?>&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 <?php endif; ?>
-
-                <div class="ed-paylas">
-                    <p class="ed-paylas-baslik">Bu İçeriği Paylaş:</p>
-                    <div class="ed-paylas-butonlar" id="edPaylasButonlari">
-                        <a class="ed-paylas-btn facebook" id="edPaylasFacebook" href="#" target="_blank" rel="noopener"><i class="bi bi-facebook"></i> Facebook</a>
-                        <a class="ed-paylas-btn x" id="edPaylasX" href="#" target="_blank" rel="noopener"><i class="bi bi-twitter-x"></i> Twitter</a>
-                        <a class="ed-paylas-btn linkedin" id="edPaylasLinkedin" href="#" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i> LinkedIn</a>
-                        <a class="ed-paylas-btn whatsapp" id="edPaylasWhatsapp" href="#" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-                    </div>
-                </div>
 
                 <a href="<?php echo $basePath; ?>pages/etkinlikler.php" class="ed-geri">
                     <i class="bi bi-arrow-left"></i> Tüm Etkinliklere Dön
@@ -533,18 +511,6 @@ include '../includes/header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // --- Paylaşım linkleri (mevcut sayfa URL'sine göre) ---
-    const suankiUrl = encodeURIComponent(window.location.href);
-    const baslikMetni = encodeURIComponent(document.title);
-    const fbBtn = document.getElementById('edPaylasFacebook');
-    const xBtn = document.getElementById('edPaylasX');
-    const liBtn = document.getElementById('edPaylasLinkedin');
-    const waBtn = document.getElementById('edPaylasWhatsapp');
-    if (fbBtn) fbBtn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + suankiUrl;
-    if (xBtn) xBtn.href = 'https://twitter.com/intent/tweet?url=' + suankiUrl + '&text=' + baslikMetni;
-    if (liBtn) liBtn.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + suankiUrl;
-    if (waBtn) waBtn.href = 'https://wa.me/?text=' + baslikMetni + '%20' + suankiUrl;
-
     // --- "Diğer Etkinlikler" sayfalama (6'şar) ---
     const digerKartlar = Array.from(document.querySelectorAll('.ed-diger-oge'));
     const sayfalamaKutusu = document.getElementById('edSayfalama');
